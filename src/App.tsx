@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {Login} from "./Login.tsx";
+import {createContext, useState} from "react";
+
+export const UserContext = createContext<string>("");
+
+interface SessionData {
+    username: string
+    message: string
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [currentUser, setCurrentUser] = useState("");
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (<UserContext.Provider value={currentUser}>
+        {(currentUser.length > 0 ?
+            <section className="main">
+                Logged in as {currentUser}
+            </section> :
+            <section className="login">
+                <Login onLogin={(username, password) => {
+                    fetch(`http://localhost:7777/session/login?username=${username}&password=${password}`,
+                        {credentials: "include"})
+                        .then(res => {
+                            if (res.status === 200)
+                                return res.json()
+                            else throw new Error("credenziali non valide");
+                        })
+                        .then((sd: SessionData) => {
+                            setCurrentUser(sd.username);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        })
+
+                }}/>
+            </section>)}
+    </UserContext.Provider>)
 }
 
 export default App
