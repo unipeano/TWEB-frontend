@@ -1,6 +1,7 @@
 import './App.css'
 import {Login} from "./Login.tsx";
-import {createContext, useState} from "react";
+import {createContext, useEffect, useState} from "react";
+import {Header} from "./Header.tsx";
 
 export const UserContext = createContext<string>("");
 
@@ -12,7 +13,34 @@ interface SessionData {
 function App() {
     const [currentUser, setCurrentUser] = useState("");
 
+    function checkConnection() {
+        let valid = true;
+        fetch('http://localhost:7777/session/login', {
+            credentials: 'include',
+        })
+            .then(res => res.json())
+            .then((s: SessionData) => {
+                if (valid) {
+                    setCurrentUser(s.username)
+                }
+            });
+        return () => {
+            valid = false;
+        };
+    }
+
+    useEffect(checkConnection, []);
+
     return (<UserContext.Provider value={currentUser}>
+        <Header onLogout={() => {
+            fetch("http://localhost:7777/session/logout", {
+                credentials: "include",
+            })
+                .then(res => res.json())
+                .then((sd: SessionData) => {
+                    setCurrentUser(sd.username);
+                });
+        }}/>
         {(currentUser.length > 0 ?
             <section className="main">
                 Logged in as {currentUser}
