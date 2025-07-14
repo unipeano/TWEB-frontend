@@ -1,0 +1,24 @@
+footer .copy {
+    grid-area: copy;
+}
+
+footer .license {
+    grid-area: license;
+}
+
+footer .credits {
+    grid-area: credits;
+}
+
+footer .highlight {
+    background-color: #fdffb9;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer .license img.cclicense {
+    height: 30px;
+    margin-left: 10px;
+}

@@ -1,35 +1,73 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {createContext, useEffect, useState} from "react";
+import {Footer} from "./Footer.tsx";
+import {Home} from "./Home.tsx";
+import {Login} from "./Login.tsx";
+import {Header} from "./Header.tsx";
+
+export const UserContext = createContext<string>("");
+
+interface SessionData {
+    username: string
+    message: string
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [currentUser, setCurrentUser] = useState("");
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    function checkConnection() {
+        let valid = true;
+        fetch('http://localhost:7777/session/login', {
+            credentials: 'include',
+        })
+            .then(res => res.json())
+            .then((s: SessionData) => {
+                if (valid) {
+                    setCurrentUser(s.username)
+                }
+            });
+        return () => {
+            valid = false;
+        };
+    }
+
+    useEffect(checkConnection, []);
+
+    return (<UserContext.Provider value={currentUser}>
+        {(currentUser.length > 0 ?
+                <>
+                    <Header onLogout={() => {
+                        fetch("http://localhost:7777/session/logout", {
+                            credentials: "include",
+                        })
+                            .then(res => res.json())
+                            .then((sd: SessionData) => {
+                                setCurrentUser(sd.username);
+                            });
+                    }}/>
+                    <div className="central-area">
+                        <Home/>
+                        <Footer/>
+                    </div>
+                </>
+                :
+                <Login onLogin={(username, password) => {
+                    fetch(`http://localhost:7777/session/login?username=${username}&password=${password}`,
+                        {credentials: "include"})
+                        .then(res => {
+                            if (res.status === 200)
+                                return res.json()
+                            else throw new Error("credenziali non valide");
+                        })
+                        .then((sd: SessionData) => {
+                            setCurrentUser(sd.username);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        })
+                }}/>
+        )}
+    </UserContext.Provider>);
 }
 
 export default App

@@ -1,0 +1,110 @@
+.actions {
+    grid-area: actions;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 100px 80px 100px 100px auto;
+    grid-template-areas: "logo home new profile search";
+    align-items: center;
+}
+
+
+.logo-container {
+    grid-area: logo;
+}
+
+.logo-container img {
+    max-height: 70px;
+}
+
+.logo-container {
+    margin-right: 2rem;
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+
+.home {
+    grid-area: home;
+    display: grid;
+    grid-auto-flow: column;
+
+}
+
+.new {
+    grid-area: new;
+    display: grid;
+    grid-auto-flow: column;
+}
+
+.user {
+    grid-area: profile;
+    display: grid;
+    grid-auto-flow: column;
+}
+
+.search {
+    grid-area: search;
+    background-color: white;
+    border: 2px solid lightgray;
+    width: 600px;
+    height: 40px;
+    border-radius: 20px;
+    display: grid;
+    align-items: center;
+}
+
+.search:focus-within {
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.search-form {
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.search-form input {
+    background: transparent;
+    font-size: 16px;
+    border: 0;
+    padding: 0 15px;
+    outline: none;
+}
+
+
+.user-nav {
+    grid-area: user-nav;
+    display: flex;
+    column-gap: 10px;
+}
+
+p.active {
+    color: #3498db;
+}
+
+.nav-item {
+    background-color: #3498db;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: white;
+    border-radius: 15px;
+    border: 2px solid #3498db;
+    cursor: pointer;
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.nav-item:hover {
+    background-color: #2980b9;
+}
+

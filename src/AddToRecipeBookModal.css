@@ -1,0 +1,157 @@
+.modal-overlay {
+    display: none; /*flex*/
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-container {
+    background-color: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.close-modal {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #7f8c8d;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.modal-recipe-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.recipebooks-list {
+    margin-bottom: 20px;
+}
+
+.recipebook-option {
+    padding: 12px 15px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.recipebook-option:hover {
+    background-color: #f9f9f9;
+}
+
+.recipebook-option input[type="radio"] {
+    display: none;
+}
+
+.recipebook-option label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+}
+
+.recipebook-option input[type="radio"]:checked + label {
+    font-weight: bold;
+}
+
+.recipebook-option input[type="radio"]:checked + label .recipebook-name {
+    color: #3498db;
+}
+
+.recipebook-name {
+    font-size: 1rem;
+}
+
+.recipebook-count {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.new-recipebook-option {
+    padding: 10px 0;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: #3498db;
+    cursor: pointer;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+    font-weight: normal;
+}
+
+.btn-text:hover {
+    text-decoration: underline;
+    background-color: white;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    border: 1px solid #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
