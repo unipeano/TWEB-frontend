@@ -15,43 +15,61 @@ export function Home(): ReactElement {
                         Filtra:
                     </div>
                     <div className="status-filter-item">
-                        <input type="radio"
-                               name="status-filter-radio"
-                               value="all"
-                               id="all" checked/><label htmlFor="all">All recipes</label>
+                        <input
+                            type="radio"
+                            name="status-filter-radio"
+                            defaultValue="all"
+                            id="all"
+                            defaultChecked={true}
+                        />
+                        <label htmlFor="all">All recipes</label>
                     </div>
                     <div className="status-filter-item">
-                        <input type="radio"
-                               name="status-filter-radio"
-                               value="breakfast"
-                               id="breakfast"/><label htmlFor="breakfast">Breakfast</label>
+                        <input
+                            type="radio"
+                            name="status-filter-radio"
+                            defaultValue="breakfast"
+                            id="breakfast"
+                        />
+                        <label htmlFor="breakfast">Breakfast</label>
                     </div>
                     <div className="status-filter-item">
-                        <input type="radio"
-                               name="status-filter-radio"
-                               value="appetizer"
-                               id="appetizer"/><label htmlFor="appetizer">Appetizer</label>
+                        <input
+                            type="radio"
+                            name="status-filter-radio"
+                            defaultValue="appetizer"
+                            id="appetizer"
+                        />
+                        <label htmlFor="appetizer">Appetizer</label>
                     </div>
                     <div className="status-filter-item">
-                        <input type="radio"
-                               name="status-filter-radio"
-                               value="main-course"
-                               id="main-course"/><label htmlFor="main-course">Main Course</label>
+                        <input
+                            type="radio"
+                            name="status-filter-radio"
+                            defaultValue="main-course"
+                            id="main-course"
+                        />
+                        <label htmlFor="main-course">Main Course</label>
                     </div>
                     <div className="status-filter-item">
-                        <input type="radio"
-                               name="status-filter-radio"
-                               value="dessert"
-                               id="dessert"/><label htmlFor="dessert">Dessert</label>
+                        <input
+                            type="radio"
+                            name="status-filter-radio"
+                            defaultValue="dessert"
+                            id="dessert"
+                        />
+                        <label htmlFor="dessert">Dessert</label>
                     </div>
                 </form>
             </div>
             <div className="recipe-container-content">
                 <div className="recipe-collection">
-                    <div className="recipe-item" data-recipeid="1">
-                        <img className="recipe-image"
-                             alt="recipe image"
-                             src="/image/recipes/1.png"/>
+                    <div className="recipe-item" data-recipeid={1}>
+                        <img
+                            className="recipe-image"
+                            alt="recipe image"
+                            src="/image/recipes/1.png"
+                        />
                         <div className="recipe-content">
                             <div className="recipe-header">
                                 <h3 className="recipe-title">Spaghetti with tomato sauce</h3>
@@ -60,7 +78,9 @@ export function Home(): ReactElement {
                             <div className="recipe-categories">
                                 <span className="recipe-category">Main Course</span>
                             </div>
-                            <p className="recipe-description">A classic Italian pasta dish with tomato sauce</p>
+                            <p className="recipe-description">
+                                A classic Italian pasta dish with tomato sauce
+                            </p>
                             <div className="recipe-meta">
                                 <div className="recipe-details">
                                     <span>⏱️ 10 min</span>
@@ -73,10 +93,12 @@ export function Home(): ReactElement {
                             </div>
                         </div>
                     </div>
-                    <div className="recipe-item" data-recipeid="2">
-                        <img className="recipe-image"
-                             alt="recipe image"
-                             src="/image/recipes/2.png"/>
+                    <div className="recipe-item" data-recipeid={2}>
+                        <img
+                            className="recipe-image"
+                            alt="recipe image"
+                            src="/image/recipes/2.png"
+                        />
                         <div className="recipe-content">
                             <div className="recipe-header">
                                 <h3 className="recipe-title">Chocolate cake</h3>
@@ -98,10 +120,12 @@ export function Home(): ReactElement {
                             </div>
                         </div>
                     </div>
-                    <div className="recipe-item" data-recipeid="3">
-                        <img className="recipe-image"
-                             alt="recipe image"
-                             src="/image/recipes/3.png"/>
+                    <div className="recipe-item" data-recipeid={3}>
+                        <img
+                            className="recipe-image"
+                            alt="recipe image"
+                            src="/image/recipes/3.png"
+                        />
                         <div className="recipe-content">
                             <div className="recipe-header">
                                 <h3 className="recipe-title">Caesar salad</h3>
@@ -110,7 +134,9 @@ export function Home(): ReactElement {
                             <div className="recipe-categories">
                                 <span className="recipe-category">Appetizer</span>
                             </div>
-                            <p className="recipe-description">Fresh salad with chicken and dressing</p>
+                            <p className="recipe-description">
+                                Fresh salad with chicken and dressing
+                            </p>
                             <div className="recipe-meta">
                                 <div className="recipe-details">
                                     <span>⏱️ 20 min</span>
@@ -120,14 +146,16 @@ export function Home(): ReactElement {
                                 <a href="recipe-details.html">
                                     <button className="recipe-action">Vedi ricetta</button>
                                 </a>
-
+                                {/* integro js */}
                             </div>
                         </div>
                     </div>
-                    <div className="recipe-item" data-recipeid="4">
-                        <img className="recipe-image"
-                             alt="recipe image"
-                             src="/image/recipes/4.png"/>
+                    <div className="recipe-item" data-recipeid={4}>
+                        <img
+                            className="recipe-image"
+                            alt="recipe image"
+                            src="/image/recipes/4.png"
+                        />
                         <div className="recipe-content">
                             <div className="recipe-header">
                                 <h3 className="recipe-title">Pancakes</h3>
@@ -150,10 +178,12 @@ export function Home(): ReactElement {
                             </div>
                         </div>
                     </div>
-                    <div className="recipe-item" data-recipeid="5">
-                        <img className="recipe-image"
-                             alt="recipe image"
-                             src="/image/recipes/5.png"/>
+                    <div className="recipe-item" data-recipeid={5}>
+                        <img
+                            className="recipe-image"
+                            alt="recipe image"
+                            src="/image/recipes/5.png"
+                        />
                         <div className="recipe-content">
                             <div className="recipe-header">
                                 <h3 className="recipe-title">Omelette</h3>
@@ -175,10 +205,12 @@ export function Home(): ReactElement {
                             </div>
                         </div>
                     </div>
-                    <div className="recipe-item" data-recipeid="6">
-                        <img className="recipe-image"
-                             alt="recipe image"
-                             src="/image/recipes/6.png"/>
+                    <div className="recipe-item" data-recipeid={6}>
+                        <img
+                            className="recipe-image"
+                            alt="recipe image"
+                            src="/image/recipes/6.png"
+                        />
                         <div className="recipe-content">
                             <div className="recipe-header">
                                 <h3 className="recipe-title">BLT Sandiwich</h3>
@@ -188,7 +220,9 @@ export function Home(): ReactElement {
                                 <span className="recipe-category">Main Course</span>
                                 <span className="recipe-category">Appetizer</span>
                             </div>
-                            <p className="recipe-description">Bacon, Lettuce, Tomato sandwich</p>
+                            <p className="recipe-description">
+                                Bacon, Lettuce, Tomato sandwich
+                            </p>
                             <div className="recipe-meta">
                                 <div className="recipe-details">
                                     <span>⏱️ 10 min</span>
@@ -202,7 +236,7 @@ export function Home(): ReactElement {
                         </div>
                     </div>
                 </div>
-                <div className="recipe-sidebar"></div>
+                <div className="recipe-sidebar"/>
             </div>
         </div>
 
