@@ -1,1 +1,12 @@
+.central-area {
+    grid-area: main;
+    background-color: rgb(247, 246, 248);
+    overflow-y: scroll;
+}
+
+.hide {
+    display: none !important;
+}
+
+
 

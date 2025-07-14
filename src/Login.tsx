@@ -10,29 +10,48 @@ export function Login({onLogin}: LoginProps): ReactElement {
     const [password, setPassword] = useState("");
 
     return (
-        <form className="login-form">
-            <h1>Login</h1>
-            <div>
-                <input type="text"
-                       id="username"
-                       placeholder="Username"
-                       name="username"
-                       value={username}
-                       onChange={(e) => setUsername(e.target.value)}/>
-            </div>
-            <div>
-                <input type="text"
-                       id="password"
-                       placeholder="Password"
-                       name="password"
-                       value={password}
-                       onChange={(e) => setPassword(e.target.value)}/>
-            </div>
-            <div className="actions">
-                <div className="form-action login"
-                     onClick={() => onLogin(username, password)}>Login
+        <div className="login-container">
+            <div className="login-card">
+                <div className="login-logo-container">
+                    <img src="/image/logo3res.png" alt="logo" className="login-logo"/>
                 </div>
+
+                <form className="login-form">
+                    <h2 className="login-title">Accedi al tuo account</h2>
+
+                    <div className="form-group">
+                        <label htmlFor="username" className="input-label">Username</label>
+                        <input
+                            type="text"
+                            id="username"
+                            className="login-input"
+                            placeholder="Inserisci il tuo username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="password" className="input-label">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            className="login-input"
+                            placeholder="Inserisci la tua password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+
+                    <button
+                        type="button"
+                        className="login-button"
+                        onClick={() => onLogin(username, password)}
+                    >
+                        Accedi
+                    </button>
+                </form>
             </div>
-        </form>
+        </div>
     );
 }

@@ -1,6 +1,8 @@
 import './App.css'
-import {Login} from "./Login.tsx";
 import {createContext, useEffect, useState} from "react";
+import {Footer} from "./Footer.tsx";
+import {Home} from "./Home.tsx";
+import {Login} from "./Login.tsx";
 import {Header} from "./Header.tsx";
 
 export const UserContext = createContext<string>("");
@@ -32,20 +34,23 @@ function App() {
     useEffect(checkConnection, []);
 
     return (<UserContext.Provider value={currentUser}>
-        <Header onLogout={() => {
-            fetch("http://localhost:7777/session/logout", {
-                credentials: "include",
-            })
-                .then(res => res.json())
-                .then((sd: SessionData) => {
-                    setCurrentUser(sd.username);
-                });
-        }}/>
         {(currentUser.length > 0 ?
-            <section className="main">
-                Logged in as {currentUser}
-            </section> :
-            <section className="login">
+                <>
+                    <Header onLogout={() => {
+                        fetch("http://localhost:7777/session/logout", {
+                            credentials: "include",
+                        })
+                            .then(res => res.json())
+                            .then((sd: SessionData) => {
+                                setCurrentUser(sd.username);
+                            });
+                    }}/>
+                    <div className="central-area">
+                        <Home/>
+                        <Footer/>
+                    </div>
+                </>
+                :
                 <Login onLogin={(username, password) => {
                     fetch(`http://localhost:7777/session/login?username=${username}&password=${password}`,
                         {credentials: "include"})
@@ -60,10 +65,9 @@ function App() {
                         .catch(err => {
                             console.log(err);
                         })
-
                 }}/>
-            </section>)}
-    </UserContext.Provider>)
+        )}
+    </UserContext.Provider>);
 }
 
 export default App
