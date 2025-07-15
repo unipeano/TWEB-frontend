@@ -1,26 +1,31 @@
 import {type ReactElement, useContext} from "react";
 import "./Header.css"
-import {UserContext} from "./App.tsx";
+import {type ActiveView, UserContext} from "./App.tsx";
 
-interface HeaderProps {
+export interface HeaderProps {
     onLogout: () => void;
+    currentView: ActiveView;
+    onChangeView: (view: ActiveView) => void;
 }
 
-export function Header({onLogout}: HeaderProps): ReactElement {
+export function Header({onLogout, currentView, onChangeView}: HeaderProps): ReactElement {
     const user = useContext(UserContext);
     return (<header>
         <div className="actions">
             <div className="logo-container">
                 <img src="/image/logo3res.png" alt="logo"/>
             </div>
-            <div className="home">
-                <p className="active"><a href="home.html">Home</a></p>
+            <div className={"home" + (currentView === "Home" ? " active" : "")}
+                 onClick={() => onChangeView("Home")}>
+                Home
             </div>
-            <div className="new">
-                <p><a href="publish.html">Pubblica</a></p>
+            <div className={"publish" + (currentView === "Publish" ? " active" : "")}
+                 onClick={() => onChangeView("Publish")}>
+                Pubblica
             </div>
-            <div className="user">
-                <p><a href="profile.html">Profilo</a></p>
+            <div className={"profile" + (currentView === "Profile" ? " active" : "")}
+                 onClick={() => onChangeView("Profile")}>
+                Profilo
             </div>
 
             <div className="search">
@@ -31,9 +36,8 @@ export function Header({onLogout}: HeaderProps): ReactElement {
             </div>
         </div>
         <nav className="user-nav">
-            <a href="profile.html">
-                <div className="nav-item">Mattia</div>
-            </a>
+            <div className="nav-item"
+                 onClick={() => onChangeView("Profile")}>{user}</div>
             {(user.length > 0 ?
                 <div className="nav-item" onClick={() => onLogout()}>Esci</div>
                 :

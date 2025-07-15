@@ -4,8 +4,11 @@ import {Footer} from "./Footer.tsx";
 import {Home} from "./Home.tsx";
 import {Login} from "./Login.tsx";
 import {Header} from "./Header.tsx";
+import {CreateRecipeForm} from "./CreateRecipeForm.tsx";
+import {Profile} from "./Profile.tsx";
 
 export const UserContext = createContext<string>("");
+export type ActiveView = "Home" | "Publish" | "Profile";
 
 interface SessionData {
     username: string
@@ -15,6 +18,18 @@ interface SessionData {
 function App() {
     const [currentUser, setCurrentUser] = useState("");
     const [error, setError] = useState<string | null>(null);
+    const [currentView, setCurrentView] = useState<ActiveView>("Home");
+
+    function handleCurrentView(view: ActiveView) {
+        setCurrentView(view);
+        if (view === "Home") {
+            document.title = "Home";
+        } else if (view === "Publish") {
+            document.title = "Pubblica";
+        } else if (view === "Profile") {
+            document.title = "Profilo";
+        }
+    }
 
     function checkConnection() {
         let valid = true;
@@ -45,9 +60,11 @@ function App() {
                             .then((sd: SessionData) => {
                                 setCurrentUser(sd.username);
                             });
-                    }}/>
+                    }} currentView={currentView} onChangeView={handleCurrentView}/>
                     <div className="central-area">
-                        <Home/>
+                        {currentView === "Home" && <Home/>}
+                        {currentView === "Publish" && <CreateRecipeForm/>}
+                        {currentView === "Profile" && <Profile/>}
                         <Footer/>
                     </div>
                 </>
