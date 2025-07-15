@@ -1,13 +1,13 @@
 import "./AddToRecipeBookModal.css";
 
 export function AddToRecipeBookModal() {
-    return (<div className="modal-overlay hide" id="addToRecipeBookModal">
-        <div className="modal-container">
-            <div className="modal-header">
+    return (<div className="add-to-recipebook-modal hide" id="addToRecipeBookModal">
+        <div className="add-to-recipebook-modal-container">
+            <div className="add-to-recipebook-modal-header">
                 <h3>Aggiungi a ricettario</h3>
                 <span className="close-modal">×</span>
             </div>
-            <div className="modal-body">
+            <div className="add-to-recipebook-modal-body">
                 <p>Aggiungi "<span className="modal-recipe-title">Spaghetti with tomato sauce</span>" a:</p>
 
                 <div className="recipebooks-list">

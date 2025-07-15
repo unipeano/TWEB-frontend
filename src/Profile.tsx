@@ -1,32 +1,34 @@
 import "./Profile.css";
 import {CreateRecipeBookForm} from "./CreateRecipeBookForm.tsx";
+import {useContext} from "react";
+import {UserContext} from "./App.tsx";
 
 export function Profile() {
-
+    const user = useContext(UserContext);
     return (<>
-            <div className="container">
+            <div className="profile-container">
                 <div className="profile-header">
-                    <img src="//image/users/1.jpg" alt="Avatar" className="avatar"/>
+                    <img src="/image/users/1.jpg" alt="Avatar" className="avatar"/>
                     <div className="user-info">
-                        <h1>Mattia</h1>
+                        <h1>{user}</h1>
                         <p className="user-meta">
                             {"{"}description{"}"}
                         </p>
                     </div>
                 </div>
-                <div className="cookbooks-nav">
-                    <div className="cookbook-tab active">
+                <div className="recipebooks-nav">
+                    <div className="recipebook-tab active">
                         Le mie ricette <span className="count">1</span>
                     </div>
-                    <div className="cookbook-tab ">
+                    <div className="recipebook-tab ">
                         Preferiti <span className="count">0</span>
                     </div>
-                    <div className="add-cookbook">
+                    <div className="add-recipebook">
                         <i className="fas fa-plus"/> Nuovo
                     </div>
                 </div>
-                <div className="cookbook-content">
-                    <div className="cookbook-header">
+                <div className="recipebook-content">
+                    <div className="recipebook-header">
                         <h2>Le mie ricette</h2>
                         {/*div class="cookbook-actions">
     <button class="btn btn-outline">
@@ -41,13 +43,13 @@ export function Profile() {
                         <a href="recipe-details.html">
                             <div className="recipe-card">
                                 <img
-                                    src="//image/recipes/1.png"
+                                    src="/image/recipes/1.png"
                                     alt="Spaghetti with tomato sauce"
                                     className="recipe-image"
                                 />
                                 <div className="recipe-info">
-                                    <h3 className="recipe-title">Spaghetti with tomato sauce</h3>
-                                    <div className="recipe-meta">
+                                    <h3 className="recipebook-recipe-title">Spaghetti with tomato sauce</h3>
+                                    <div className="recipebook-recipe-meta">
                 <span>
                   <i className="fas fa-trash"/>
                 </span>

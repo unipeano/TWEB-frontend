@@ -1,7 +1,8 @@
 import "./UserRecipes.css";
 
 export function UserRecipes() {
-    return (<div className="recipe-container">
+    return (<div className="home-central-area">
+        <div className="recipe-container">
             <div className="recipe-container-header">
                 <div className="user-image-container">
                     <img src="/image/users/1.jpg" alt="user image" className="user-image"/>
@@ -53,5 +54,5 @@ export function UserRecipes() {
                 <div className="recipe-sidebar"/>
             </div>
         </div>
-    );
+    </div>);
 }

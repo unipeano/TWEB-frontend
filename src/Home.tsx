@@ -152,10 +152,10 @@ export function Home(): ReactElement {
         };
     }, []);
 
-    return (<>
-        <div className="recipe-container">
-            <div className="recipe-container-header">
-                <div className="recipe-container-header-title">
+    return (<div className="home-central-area">
+        <div className="home-recipe-container">
+            <div className="home-recipe-container-header">
+                <div className="home-recipe-container-header-title">
                     <h1>Ricette</h1>
                 </div>
                 <RecipeFilter categories={categories} filter={categoryFilter}
@@ -173,6 +173,6 @@ export function Home(): ReactElement {
 
 
         <AddToRecipeBookModal/>
-    </>);
+    </div>);
 
 }

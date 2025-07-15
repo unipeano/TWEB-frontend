@@ -2,10 +2,10 @@ import "./CreateRecipeForm.css";
 
 export function CreateRecipeForm() {
     return (<form className="recipe-form">
-            <div className="form-section">
+            <div className="recipe-form-section">
                 <h2>Pubblicazione ricetta</h2>
             </div>
-            <div className="form-group">
+            <div className="recipe-form-group">
                 <label htmlFor="recipe-title">Titolo della ricetta*</label>
                 <input
                     type="text"
@@ -15,7 +15,7 @@ export function CreateRecipeForm() {
                     placeholder="Es: Pasta al pesto"
                 />
             </div>
-            <div className="form-group">
+            <div className="recipe-form-group">
                 <label htmlFor="recipe-description">Descrizione*</label>
                 <textarea
                     id="recipe-description"
@@ -26,7 +26,7 @@ export function CreateRecipeForm() {
                     defaultValue={""}
                 />
             </div>
-            <div className="form-group">
+            <div className="recipe-form-group">
                 <label htmlFor="recipe-image">Immagine*</label>
                 <input
                     type="number"
@@ -37,7 +37,7 @@ export function CreateRecipeForm() {
                     placeholder="Es: 1"
                 />
             </div>
-            <div className="form-group">
+            <div className="recipe-form-group">
                 <label htmlFor="recipe-instructions">Istruzioni di preparazione*</label>
                 <textarea
                     id="recipe-instructions"
@@ -48,17 +48,17 @@ export function CreateRecipeForm() {
                     defaultValue={""}
                 />
             </div>
-            <div className="form-row">
-                <div className="form-group half">
+            <div className="recipe-form-row">
+                <div className="recipe-form-group half">
                     <label htmlFor="prep-time">Tempo di preparazione (min)*</label>
                     <input type="number" id="prep-time" name="prepTime" min={1} required={true}/>
                 </div>
-                <div className="form-group half">
+                <div className="recipe-form-group half">
                     <label htmlFor="servings">Numero di porzioni*</label>
                     <input type="number" id="servings" name="servings" min={1} required={true}/>
                 </div>
             </div>
-            <div className="form-group">
+            <div className="recipe-form-group">
                 <label>Ingredienti*</label>
                 <div className="ingredients-container">
                     <div className="ingredient-item">
@@ -85,7 +85,7 @@ export function CreateRecipeForm() {
                     </button>
                 </div>
             </div>
-            <div className="form-group">
+            <div className="recipe-form-group">
                 <label>Categorie*</label>
                 <div className="categories-container">
                     <div className="category-option">
@@ -126,7 +126,7 @@ export function CreateRecipeForm() {
                     </div>
                 </div>
             </div>
-            <div className="form-actions">
+            <div className="recipe-form-actions">
                 <button type="submit" className="submit-btn">
                     Pubblica ricetta
                 </button>

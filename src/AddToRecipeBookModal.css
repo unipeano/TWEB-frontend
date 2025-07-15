@@ -1,4 +1,4 @@
-.modal-overlay {
+.add-to-recipebook-modal {
     display: flex; /*flex*/
     position: fixed;
     top: 0;
@@ -11,7 +11,7 @@
     z-index: 1000;
 }
 
-.modal-container {
+.add-to-recipebook-modal-container {
     background-color: white;
     border-radius: 8px;
     width: 90%;
@@ -21,7 +21,7 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-.modal-header {
+.add-to-recipebook-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -29,23 +29,18 @@
     border-bottom: 1px solid #eee;
 }
 
-.modal-header h3 {
+.add-to-recipebook-modal-header h3 {
     margin: 0;
     font-size: 1.25rem;
     color: #333;
 }
 
-.close-modal {
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #7f8c8d;
-}
 
-.modal-body {
+.add-to-recipebook-modal-body {
     padding: 20px;
 }
 
-.modal-body p {
+.add-to-recipebook-modal-body p {
     margin-bottom: 20px;
     color: #555;
 }

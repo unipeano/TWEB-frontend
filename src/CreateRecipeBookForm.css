@@ -1,4 +1,4 @@
-.modal {
+.recipe-book-modal {
     display: none; /*flex*/
     position: fixed;
     top: 0;
@@ -11,7 +11,7 @@
     z-index: 1000;
 }
 
-.modal-content {
+.recipe-book-modal-content {
     background: white;
     padding: 30px;
     border-radius: 10px;
@@ -19,7 +19,7 @@
     max-width: 500px;
 }
 
-.modal-header {
+.recipe-book-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -32,17 +32,17 @@
     color: #7f8c8d;
 }
 
-.form-group {
+.recipe-book-form-group {
     margin-bottom: 15px;
 }
 
-.form-group label {
+.recipe-book-form-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: 500;
 }
 
-.form-group input {
+.recipe-book-form-group input {
     width: 200px;
     padding: 10px;
     border: 1px solid rgba(193, 191, 191, 0.76);
