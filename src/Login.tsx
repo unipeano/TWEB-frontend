@@ -3,9 +3,10 @@ import "./Login.css";
 
 interface LoginProps {
     onLogin: (name: string, password: string) => void
+    error: string | null;
 }
 
-export function Login({onLogin}: LoginProps): ReactElement {
+export function Login({onLogin, error}: LoginProps): ReactElement {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -50,6 +51,11 @@ export function Login({onLogin}: LoginProps): ReactElement {
                     >
                         Accedi
                     </button>
+                    {error && (
+                        <div className="error-message">
+                            {error}
+                        </div>
+                    )}
                 </form>
             </div>
         </div>

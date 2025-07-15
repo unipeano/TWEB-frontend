@@ -14,6 +14,7 @@ interface SessionData {
 
 function App() {
     const [currentUser, setCurrentUser] = useState("");
+    const [error, setError] = useState<string | null>(null);
 
     function checkConnection() {
         let valid = true;
@@ -57,15 +58,16 @@ function App() {
                         .then(res => {
                             if (res.status === 200)
                                 return res.json()
-                            else throw new Error("credenziali non valide");
+                            else throw new Error("Credenziali non valide");
                         })
                         .then((sd: SessionData) => {
                             setCurrentUser(sd.username);
+                            setError(null);
                         })
                         .catch(err => {
-                            console.log(err);
+                            setError(err.message);
                         })
-                }}/>
+                }} error={error}/>
         )}
     </UserContext.Provider>);
 }
