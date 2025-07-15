@@ -126,6 +126,30 @@ export function Home(): ReactElement {
             servings: 1,
             author: "Elena",
             ingredients: [{name: "Spaghetti", quantity: "200g"}, {name: "Tomato sauce", quantity: "100ml"}],
+        },
+        {
+            id: 7,
+            title: "Lampredotto",
+            image: "7.png",
+            categories: [{id: 2, name: "Main Course"}, {id: 3, name: "Appetizer"}],
+            description: "Traditional Florentine street food with tripe",
+            instructions: "Slow cook tripe with herbs, serve in a bun with salsa verde.",
+            preparationTime: 15,
+            servings: 12,
+            author: "Elena",
+            ingredients: [{name: "Lampredotto", quantity: "1kg"}, {name: "Bread", quantity: "8 rolls"}],
+        },
+        {
+            id: 8,
+            title: "Muffins",
+            image: "8.png",
+            categories: [{id: 1, name: "Breakfast"}, {id: 3, name: "Dessert"}],
+            description: "Sweet muffins with chocolate chips",
+            instructions: "Mix flour, sugar, eggs, chocolate chips, bake at 180°C for 20 minutes.",
+            preparationTime: 30,
+            servings: 6,
+            author: "Paola",
+            ingredients: [{name: "Flour", quantity: "100g"}, {name: "Egg", quantity: "2"}],
         }
         // hard coded, then server
     ];
