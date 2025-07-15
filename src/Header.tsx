@@ -2,8 +2,12 @@ import {type ReactElement, useContext, useState} from "react";
 import "./Header.css"
 import {type ActiveView, UserContext} from "./App.tsx";
 
+interface SearchFormProps {
+    onChangeView: (view: ActiveView) => void;
+}
+
 // search form che prende il setting delle recipe così quando si fa una ricerca si impostano i risultati
-export function SearchForm(): ReactElement {
+export function SearchForm({onChangeView}: SearchFormProps): ReactElement {
     const [input, setInput] = useState("");
 
     const fetchData = (query: string) => {
@@ -26,6 +30,8 @@ export function SearchForm(): ReactElement {
         if (input.trim()) { // Evita fetch se l'input è vuoto
             fetchData(input);
         }
+        onChangeView('Home'); //per tornare in home
+        setInput(""); // Resetta l'input dopo la ricerca
     }
 
     return (<div className="search">
@@ -63,7 +69,7 @@ export function Header({onLogout, currentView, onChangeView}: HeaderProps): Reac
                  onClick={() => onChangeView("Profile")}>
                 Profilo
             </div>
-            <SearchForm/>
+            <SearchForm onChangeView={onChangeView}/>
         </div>
         <nav className="user-nav">
             <div className="nav-item"
