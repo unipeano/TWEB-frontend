@@ -72,9 +72,14 @@ export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: Recip
                     <div className="instructions-section">
                         <h2 className="details-sub">Preparazione</h2>
                         <ol className="instructions-list">
-                            <li>
-                                {currentRecipe?.instructions}
-                            </li>
+                            {currentRecipe?.instructions.split(",").map(step => {
+                                return (
+                                    <li key={step}>
+                                        <span>{step}</span>
+                                    </li>
+                                );
+                            })
+                            }
                         </ol>
                     </div>
                 </div>
