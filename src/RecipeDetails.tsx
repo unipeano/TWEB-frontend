@@ -1,35 +1,35 @@
 import "./RecipeDetails.css";
 
 export function RecipeDetails() {
-    return (<div className="recipe-container">
-            <div className="recipe-header">
+    return (<div className="recipe-details-container">
+            <div className="recipe-details-header">
                 <img
                     src="/image/recipes/1.png"
                     alt="Pasta al pesto"
-                    className="recipe-/image"
+                    className="recipe-details-image"
                 />
-                <h1 className="recipe-title">
+                <h1 className="recipe-details-title">
                     {"{"}title{"}"}
                 </h1>
             </div>
-            <div className="recipe-meta">
-                <div className="meta-item">
+            <div className="recipe-details-meta">
+                <div className="meta-details-item">
                     <span className="meta-icon">⏱️</span>
                     <span>
         {"{"}time{"}"} minuti
       </span>
                 </div>
-                <div className="meta-item">
+                <div className="meta-details-item">
                     <span className="meta-icon">🍽️</span>
                     <span>
         {"{"}servings{"}"} persone
       </span>
                 </div>
-                <div className="meta-item add">
+                <div className="meta-details-item add">
                     <button className="add-to-recipebook">+</button>
                 </div>
             </div>
-            <div className="recipe-content">
+            <div className="recipe-details-content">
                 <div className="main-content">
                     <div className="description-section">
                         <p>
