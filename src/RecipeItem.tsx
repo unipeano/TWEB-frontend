@@ -1,8 +1,8 @@
-import type {RecipeDTO} from "./data/data-model.ts";
+import type {Recipe} from "./data/data-model.ts";
 import type {ReactElement} from "react";
 
 interface RecipeItemProps {
-    recipe: RecipeDTO;
+    recipe: Recipe;
 }
 
 export function RecipeItem(props: RecipeItemProps): ReactElement {
