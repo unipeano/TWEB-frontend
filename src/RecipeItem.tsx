@@ -35,7 +35,7 @@ export function RecipeItem({onChangeUser, onChangeView, recipe, onChangeRecipe}:
             <div className="recipe-content">
                 <div className="recipe-header">
                     <h3 className="recipe-title">{recipe.title}</h3>
-                    <button className="add-to-recipebook">+</button>
+                    <button className="add-to-recipebook" title="Add to recipebook">+</button>
                 </div>
                 <div className="recipe-categories">
                     {categories}

@@ -50,38 +50,20 @@ function RecipeFilter({categories, filter, onApplyFilter}: RecipeFilterProps) {
 }
 
 interface HomeProps {
+    recipeList: Recipe[];
     onChangeView: (view: ActiveView) => void;
     onChangeUser: (user: string) => void;
     onChangeRecipe: (recipe: Recipe) => void;
 }
 
-export function Home({onChangeView, onChangeUser, onChangeRecipe}: HomeProps): ReactElement {
+export function Home({recipeList, onChangeView, onChangeUser, onChangeRecipe}: HomeProps): ReactElement {
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
     const [categories, setCategories] = useState<Category[]>([]);
 
-    const [recipes, setRecipes] = useState<Recipe[]>([]);
-
-    useEffect(() => {
-        let valid = true;
-        fetch(`http://localhost:7777/recipes`, {
-            credentials: "include",
-        })
-            .then(response => response.json())
-            .then((recipes: Recipe[]) => {
-                if (valid) {
-                    setRecipes(recipes);
-                    console.log(recipes);
-                }
-            });
-        return () => {
-            valid = false;
-        };
-    }, []);
-
 
     const filteredRecipes = categoryFilter === 'all'
-        ? recipes
-        : recipes.filter(recipe => recipe.categories.some(category => category.name === categoryFilter)
+        ? recipeList
+        : recipeList.filter(recipe => recipe.categories.some(category => category.name === categoryFilter)
         );
 
 

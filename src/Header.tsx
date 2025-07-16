@@ -1,13 +1,14 @@
 import {type ReactElement, useContext, useState} from "react";
 import "./Header.css"
 import {type ActiveView, UserContext} from "./App.tsx";
+import type {Recipe} from "./data/data-model.ts";
 
 interface SearchFormProps {
     onChangeView: (view: ActiveView) => void;
+    onChangeRecipeList: (recipeList: Recipe[]) => void;
 }
 
-// search form che prende il setting delle recipe così quando si fa una ricerca si impostano i risultati
-export function SearchForm({onChangeView}: SearchFormProps): ReactElement {
+export function SearchForm({onChangeView, onChangeRecipeList}: SearchFormProps): ReactElement {
     const [input, setInput] = useState("");
 
     const fetchData = (query: string) => {
@@ -15,9 +16,8 @@ export function SearchForm({onChangeView}: SearchFormProps): ReactElement {
             credentials: "include",
         })
             .then(res => res.json())
-            .then(data => {
-                console.log("Search results:", data);
-                // setRecipes(data); // Assuming you have a state to hold the recipes
+            .then((recipeList: Recipe[]) => {
+                onChangeRecipeList(recipeList);
             })
             .catch(error => {
                 console.error("Error fetching search results:", error);
@@ -27,9 +27,7 @@ export function SearchForm({onChangeView}: SearchFormProps): ReactElement {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // Previene il comportamento di submit predefinito del form (refresh)
-        if (input.trim()) { // Evita fetch se l'input è vuoto
-            fetchData(input);
-        }
+        fetchData(input); // se vuota restituisce tutte le ricette
         onChangeView('Home'); //per tornare in home
         setInput(""); // Resetta l'input dopo la ricerca
     }
@@ -48,9 +46,10 @@ export interface HeaderProps {
     onLogout: () => void;
     currentView: ActiveView;
     onChangeView: (view: ActiveView) => void;
+    onChangeRecipeList: (recipeList: Recipe[]) => void;
 }
 
-export function Header({onLogout, currentView, onChangeView}: HeaderProps): ReactElement {
+export function Header({onLogout, currentView, onChangeView, onChangeRecipeList}: HeaderProps): ReactElement {
     const user = useContext(UserContext);
     return (<header>
         <div className="actions">
@@ -69,7 +68,7 @@ export function Header({onLogout, currentView, onChangeView}: HeaderProps): Reac
                  onClick={() => onChangeView("Profile")}>
                 Profilo
             </div>
-            <SearchForm onChangeView={onChangeView}/>
+            <SearchForm onChangeView={onChangeView} onChangeRecipeList={onChangeRecipeList}/>
         </div>
         <nav className="user-nav">
             <div className="nav-item"
