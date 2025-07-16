@@ -1,14 +1,17 @@
 import './App.css'
 import {createContext, useEffect, useState} from "react";
-import {Footer} from "./Footer.tsx";
 import {Home} from "./Home.tsx";
 import {Login} from "./Login.tsx";
 import {Header} from "./Header.tsx";
 import {CreateRecipeForm} from "./CreateRecipeForm.tsx";
 import {Profile} from "./Profile.tsx";
+import {RecipeDetails} from "./RecipeDetails.tsx";
+import {UserRecipes} from "./UserRecipes.tsx";
+import type {Recipe} from "./data/data-model.ts";
+import {Footer} from "./Footer.tsx";
 
 export const UserContext = createContext<string>("");
-export type ActiveView = "Home" | "Publish" | "Profile";
+export type ActiveView = "Home" | "Publish" | "Profile" | "Recipe Detail" | "User Recipes";
 
 interface SessionData {
     username: string
@@ -16,9 +19,20 @@ interface SessionData {
 }
 
 function App() {
-    const [currentUser, setCurrentUser] = useState("");
+    const [currentUser, setCurrentUser] = useState("");  //utente loggato
     const [error, setError] = useState<string | null>(null);
     const [currentView, setCurrentView] = useState<ActiveView>("Home");
+    const [user, setUser] = useState("");  //utente di cui si vogliono vedere le ricette
+    const [currentRecipe, setCurrentRecipe] = useState<Recipe | null>(null);
+
+    function handleUserChange(username: string) {
+        setUser(username);
+    }
+
+    function handleRecipeChange(recipe: Recipe) {
+        setCurrentRecipe(recipe);
+    }
+
 
     function handleCurrentView(view: ActiveView) {
         setCurrentView(view);
@@ -28,6 +42,10 @@ function App() {
             document.title = "Pubblica";
         } else if (view === "Profile") {
             document.title = "Profilo";
+        } else if (view === "Recipe Detail") {
+            document.title = "Recipe Detail";
+        } else if (view === "User Recipes") {
+            document.title = "User Recipes";
         }
     }
 
@@ -62,9 +80,15 @@ function App() {
                             });
                     }} currentView={currentView} onChangeView={handleCurrentView}/>
                     <div className="central-area">
-                        {currentView === "Home" && <Home/>}
+                        {currentView === "Home" &&
+                            <Home onChangeUser={handleUserChange} onChangeView={handleCurrentView}
+                                  onChangeRecipe={handleRecipeChange}/>}
                         {currentView === "Publish" && <CreateRecipeForm/>}
                         {currentView === "Profile" && <Profile/>}
+                        {currentView === "Recipe Detail" && <RecipeDetails currentRecipe={currentRecipe}/>}
+                        {currentView === "User Recipes" &&
+                            <UserRecipes user={user} onChangeUser={handleUserChange} onChangeView={handleCurrentView}
+                                         onChangeRecipe={handleRecipeChange}/>}
                         <Footer/>
                     </div>
                 </>

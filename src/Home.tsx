@@ -3,6 +3,7 @@ import {AddToRecipeBookModal} from "./AddToRecipeBookModal.tsx";
 import "./Home.css";
 import type {Category, Recipe} from "./data/data-model.ts";
 import {RecipeItem} from "./RecipeItem.tsx";
+import type {ActiveView} from "./App.tsx";
 
 interface RecipeFilterProps {
     categories: Category[];
@@ -48,8 +49,13 @@ function RecipeFilter({categories, filter, onApplyFilter}: RecipeFilterProps) {
 
 }
 
+interface HomeProps {
+    onChangeView: (view: ActiveView) => void;
+    onChangeUser: (user: string) => void;
+    onChangeRecipe: (recipe: Recipe) => void;
+}
 
-export function Home(): ReactElement {
+export function Home({onChangeView, onChangeUser, onChangeRecipe}: HomeProps): ReactElement {
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
     const [categories, setCategories] = useState<Category[]>([]);
 
@@ -107,7 +113,8 @@ export function Home(): ReactElement {
             <div className="recipe-container-content">
                 <div className="recipe-collection">
                     {filteredRecipes.map(recipe => (
-                        <RecipeItem recipe={recipe} key={recipe.id}/>
+                        <RecipeItem recipe={recipe} key={recipe.id} onChangeUser={onChangeUser}
+                                    onChangeView={onChangeView} onChangeRecipe={onChangeRecipe}/>
                     ))}
                 </div>
                 <div className="recipe-sidebar"/>

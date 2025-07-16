@@ -24,7 +24,9 @@ export function Profile() {
                         Preferiti <span className="count">0</span>
                     </div>
                     <div className="add-recipebook">
-                        <i className="fas fa-plus"/> Nuovo
+                        <img className="icons" alt="add"
+                             src="/add.png"/>
+                        Nuovo
                     </div>
                 </div>
                 <div className="recipebook-content">
