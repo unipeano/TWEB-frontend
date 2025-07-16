@@ -55,20 +55,22 @@ function App() {
     }
 
     useEffect(() => {
-        let valid = true;
-        fetch(`http://localhost:7777/recipes`, {
-            credentials: "include",
-        })
-            .then(response => response.json())
-            .then((recipeList: Recipe[]) => {
-                if (valid) {
-                    setRecipeList(recipeList);
-                }
-            });
-        return () => {
-            valid = false;
-        };
-    }, []);
+        if (currentUser.length > 0) {
+            let valid = true;
+            fetch(`http://localhost:7777/recipes`, {
+                credentials: "include",
+            })
+                .then(response => response.json())
+                .then((recipeList: Recipe[]) => {
+                    if (valid) {
+                        setRecipeList(recipeList);
+                    }
+                });
+            return () => {
+                valid = false;
+            };
+        }
+    }, [currentUser]);
 
     function checkConnection() {
         let valid = true;
