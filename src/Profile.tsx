@@ -51,7 +51,8 @@ export function Profile() {
                                     <h3 className="recipebook-recipe-title">Spaghetti with tomato sauce</h3>
                                     <div className="recipebook-recipe-meta">
                 <span>
-                  <i className="fas fa-trash"/>
+                  <img className="icons" alt="bin"
+                       src="/bin.png"/>
                 </span>
                                     </div>
                                 </div>

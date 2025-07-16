@@ -31,9 +31,13 @@ export function RecipeItem(props: RecipeItemProps): ReactElement {
                 </p>
                 <div className="recipe-meta">
                     <div className="recipe-details">
-                        <span>⏱️ {recipe.preparationTime} min</span>
-                        <span>🍽️ {recipe.servings} pers.</span>
-                        <span className="recipe-author">👨‍🍳 <a href="user-recipe.html">{recipe.author}</a></span>
+                        <span><img className="icons" alt="clock"
+                                   src="/clock.png"/> {recipe.preparationTime} min</span>
+                        <span><img className="icons" alt="serving-dish"
+                                   src="/serving-dish.png"/> {recipe.servings} pers.</span>
+                        <span className="recipe-author"><img className="icons" alt="chef"
+                                                             src="/chef.png"/> <a
+                            href="user-recipe.html">{recipe.author}</a></span>
                     </div>
                     <a href="recipe-details.html">
                         <button className="recipe-action">Vedi ricetta</button>

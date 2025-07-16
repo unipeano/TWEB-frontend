@@ -193,4 +193,7 @@ footer {
     grid-area: footer;
 }
 
+.icons {
+    width: 15px;
+}
 

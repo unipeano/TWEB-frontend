@@ -13,5 +13,7 @@ export function Footer(): ReactElement {
                                                                                   className="cclicense"
                                                                                   src="/image/by-nc-sa.png"/></a>
         </p>
+        <p className="credits"><a href="https://www.flaticon.com/free-icons/"
+                                  title="down arrow icons">Icons created by Flaticon</a></p>
     </footer>);
 }

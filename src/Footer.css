@@ -22,3 +22,8 @@ footer .license img.cclicense {
     height: 30px;
     margin-left: 10px;
 }
+
+footer a {
+    text-decoration: none;
+    color: #3498db;
+}
