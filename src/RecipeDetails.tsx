@@ -1,6 +1,8 @@
 import "./RecipeDetails.css";
 import type {Recipe} from "./data/data-model.ts";
 import type {ActiveView} from "./App.tsx";
+import {AddToRecipeBookModal} from "./AddToRecipeBookModal.tsx";
+import {useState} from "react";
 
 interface RecipeDetailsProps {
     currentRecipe: Recipe | null;
@@ -9,12 +11,40 @@ interface RecipeDetailsProps {
 }
 
 export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: RecipeDetailsProps) {
+    const [showModal, setShowModal] = useState(false);
 
     function handleUserClick() {
         if (currentRecipe) {
             onChangeUser(currentRecipe.author);
             onChangeView('User Recipes');
         }
+    }
+
+    // duplicated also in RecipeITEM
+    function handleAddRecipe(recipeBookId: number) {
+        setShowModal(false);
+        // la fetch seguente ritorna Void, serve che restituisca qualcosa=?
+        fetch(`http://localhost:7777/me/recipebooks/${recipeBookId}/recipes`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({id: currentRecipe?.id}),
+            credentials: "include",
+        })
+            /*.then(res => res.json())
+            .then(data => {/*setCollections(data)*/
+            /*console.log(data)
+        });*/.then(res => {
+            if (res.ok) {
+                console.log("Recipe added to recipe book successfully.");
+            } else {
+                console.error("Failed to add recipe to recipe book.");
+                throw new Error("The recipe is already in the recipe book.");
+                //display in the modal that the recipe is already in the recipe book
+            }
+        })
+            .catch(error => console.log(error));
     }
 
     return (<div className="recipe-details-container">
@@ -44,7 +74,9 @@ export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: Recip
       </span>
                 </div>
                 <div className="meta-details-item add">
-                    <button className="details-add-to-recipebook" title="Add to recipebook">+</button>
+                    <button className="details-add-to-recipebook" title="Add to recipebook"
+                            onClick={() => setShowModal(true)}>+
+                    </button>
                 </div>
             </div>
             <div className="recipe-details-content">
@@ -113,6 +145,9 @@ export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: Recip
                     </div>
                 </div>
             </div>
+            {showModal && <AddToRecipeBookModal recipeTitle={currentRecipe?.title}
+                                                onCancel={() => setShowModal(false)}
+                                                onConfirm={(id) => handleAddRecipe(id)}/>}
         </div>
     );
 }

@@ -124,29 +124,29 @@
     border-top: 1px solid #eee;
 }
 
-.btn {
+.modal-btn {
     padding: 8px 16px;
     border-radius: 4px;
     font-size: 0.95rem;
     cursor: pointer;
 }
 
-.btn-secondary {
+.modal-btn-secondary {
     background-color: #f1f1f1;
     border: 1px solid #ddd;
     color: #333;
 }
 
-.btn-secondary:hover {
+.modal-btn-secondary:hover {
     background-color: #e0e0e0;
 }
 
-.btn-primary {
+.modal-btn-primary {
     background-color: #3498db;
     border: 1px solid #3498db;
     color: white;
 }
 
-.btn-primary:hover {
+.modal-btn-primary:hover {
     background-color: #2980b9;
 }

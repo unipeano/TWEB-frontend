@@ -1,5 +1,4 @@
 import {type ReactElement, useEffect, useState} from "react";
-import {AddToRecipeBookModal} from "./AddToRecipeBookModal.tsx";
 import "./Home.css";
 import type {Category, Recipe} from "./data/data-model.ts";
 import {RecipeItem} from "./RecipeItem.tsx";
@@ -56,10 +55,14 @@ interface HomeProps {
     onChangeRecipe: (recipe: Recipe) => void;
 }
 
-export function Home({recipeList, onChangeView, onChangeUser, onChangeRecipe}: HomeProps): ReactElement {
+export function Home({
+                         recipeList,
+                         onChangeView,
+                         onChangeUser,
+                         onChangeRecipe,
+                     }: HomeProps): ReactElement {
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
     const [categories, setCategories] = useState<Category[]>([]);
-
 
     const filteredRecipes = categoryFilter === 'all'
         ? recipeList
@@ -96,15 +99,13 @@ export function Home({recipeList, onChangeView, onChangeUser, onChangeRecipe}: H
                 <div className="recipe-collection">
                     {filteredRecipes.map(recipe => (
                         <RecipeItem recipe={recipe} key={recipe.id} onChangeUser={onChangeUser}
-                                    onChangeView={onChangeView} onChangeRecipe={onChangeRecipe}/>
+                                    onChangeView={onChangeView} onChangeRecipe={onChangeRecipe}
+                        />
                     ))}
                 </div>
                 <div className="recipe-sidebar"/>
             </div>
         </div>
-
-
-        <AddToRecipeBookModal/>
     </div>);
 
 }

@@ -55,7 +55,7 @@ function App() {
     }
 
     useEffect(() => {
-        if (currentUser.length > 0) {
+        if (currentUser.length > 0) { // solo se utente loggato
             let valid = true;
             fetch(`http://localhost:7777/recipes`, {
                 credentials: "include",
@@ -107,9 +107,10 @@ function App() {
                         {currentView === "Home" &&
                             <Home recipeList={recipeList} onChangeUser={handleUserChange}
                                   onChangeView={handleCurrentView}
-                                  onChangeRecipe={handleRecipeChange}/>}
+                                  onChangeRecipe={handleRecipeChange}
+                            />}
                         {currentView === "Publish" && <CreateRecipeForm/>}
-                        {currentView === "Profile" && <Profile/>}
+                        {currentView === "Profile" && <Profile onChangeView={handleCurrentView}/>}
                         {currentView === "Recipe Detail" &&
                             <RecipeDetails currentRecipe={currentRecipe} onChangeView={handleCurrentView}
                                            onChangeUser={handleUserChange}/>}
