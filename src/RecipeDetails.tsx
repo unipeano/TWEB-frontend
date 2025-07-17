@@ -1,8 +1,8 @@
 import "./RecipeDetails.css";
 import type {Recipe} from "./data/data-model.ts";
-import type {ActiveView} from "./App.tsx";
+import {type ActiveView, UserContext} from "./App.tsx";
 import {AddToRecipeBookModal} from "./AddToRecipeBookModal.tsx";
-import {useState} from "react";
+import {useContext, useState} from "react";
 
 interface RecipeDetailsProps {
     currentRecipe: Recipe | null;
@@ -13,6 +13,7 @@ interface RecipeDetailsProps {
 export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: RecipeDetailsProps) {
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const user = useContext(UserContext);
 
     function handleError(errorMessage: string | null) {
         setError(errorMessage);
@@ -20,8 +21,12 @@ export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: Recip
 
     function handleUserClick() {
         if (currentRecipe) {
-            onChangeUser(currentRecipe.author);
-            onChangeView('User Recipes');
+            if (currentRecipe.author === user) {
+                onChangeView('Profile');
+            } else {
+                onChangeUser(currentRecipe.author);
+                onChangeView('User Recipes');
+            }
         }
     }
 
@@ -133,9 +138,9 @@ export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: Recip
                             <button className="btn btn-primary" onClick={handleUserClick}>
                                 Altre ricette
                             </button>
-                            <a href="#" className="btn btn-secondary">
+                            <button className="btn btn-secondary">
                                 Segui
-                            </a>
+                            </button>
                         </div>
                     </div>
                     <div className="tags-section">

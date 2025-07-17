@@ -1,6 +1,6 @@
 import type {Recipe} from "./data/data-model.ts";
-import {type ReactElement, useState} from "react";
-import type {ActiveView} from "./App.tsx";
+import {type ReactElement, useContext, useState} from "react";
+import {type ActiveView, UserContext} from "./App.tsx";
 import {AddToRecipeBookModal} from "./AddToRecipeBookModal.tsx";
 
 interface RecipeItemProps {
@@ -22,10 +22,15 @@ export function RecipeItem({
 
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const user = useContext(UserContext);
 
     function handleAuthorClick() {
-        onChangeUser(recipe.author);
-        onChangeView('User Recipes');
+        if (recipe.author === user) {
+            onChangeView('Profile');
+        } else {
+            onChangeUser(recipe.author);
+            onChangeView('User Recipes');
+        }
     }
 
     function handleRecipeClick() {
