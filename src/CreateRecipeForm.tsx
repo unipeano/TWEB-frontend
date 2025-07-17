@@ -1,7 +1,128 @@
 import "./CreateRecipeForm.css";
+import {useContext, useEffect, useState} from "react";
+import type {Category, Ingredient, Recipe} from "./data/data-model.ts";
+import {UserContext} from "./App.tsx";
 
 export function CreateRecipeForm() {
-    return (<form className="recipe-form">
+    const user = useContext(UserContext);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [image, setImage] = useState(1);
+    const [instructions, setInstructions] = useState("");
+    const [preparationTime, setPreparationTime] = useState(1);
+    const [servings, setServings] = useState(1);
+    const [ingredients, setIngredients] = useState<{ id: number; name: string; quantity: string }[]>([{
+        id: 0,
+        name: "",
+        quantity: ""
+    }]);
+    const [ingredientList, setIngredientList] = useState<Ingredient[]>([]);
+    const [categoryList, setCategoryList] = useState<Category[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        const recipeData: Recipe = {
+            id: 0,
+            author: user,
+            title,
+            description,
+            image: image + ".png",
+            instructions,
+            preparationTime,
+            servings,
+            ingredients: ingredients,
+            categories: selectedCategories,
+        };
+        fetch('http://localhost:7777/recipes', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(recipeData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                handleReset();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
+
+    function handleReset() {
+        setTitle("");
+        setDescription("");
+        setImage(1);
+        setInstructions("");
+        setPreparationTime(1);
+        setServings(1);
+        setIngredients([{
+            id: 0,
+            name: "",
+            quantity: ""
+        }]);
+        setSelectedCategories([]);
+    }
+
+    function handleCategoryChange(category: Category, checked: boolean) {
+        setSelectedCategories(prev => checked ? [...prev, category] : prev.filter(c => c !== category));
+    }
+
+    function handleRemoveIngredient(index: number) {
+        if (index !== 0) {
+            const newIngredients = [...ingredients];
+            newIngredients.splice(index, 1);
+            setIngredients(newIngredients);
+        } else {
+            const newIngredients = [...ingredients];
+            newIngredients[index] = {id: 0, name: "", quantity: ""};
+            setIngredients(newIngredients);
+        }
+    }
+
+    function handleAddIngredient() {
+        setIngredients(prev => [...prev, {id: 0, name: "", quantity: ""}]);
+    }
+
+
+    useEffect(() => {
+        let valid = true;
+        fetch(`http://localhost:7777/recipes/ingredients`, {
+            credentials: "include",
+        })
+            .then(response => response.json())
+            .then((ingredientList: Ingredient[]) => {
+                if (valid) {
+                    setIngredientList(ingredientList);
+                }
+            });
+        return () => {
+            valid = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        let valid = true;
+        fetch(`http://localhost:7777/recipes/categories`, {
+            credentials: "include",
+        })
+            .then(response => response.json())
+            .then((categoryList: Category[]) => {
+                if (valid) {
+                    setCategoryList(categoryList);
+                }
+            });
+        return () => {
+            valid = false;
+        };
+    }, []);
+
+
+    return (<form className="recipe-form" onSubmit={(e) => handleSubmit(e)} onReset={handleReset}>
             <div className="recipe-form-section">
                 <h2>Pubblicazione ricetta</h2>
             </div>
@@ -11,6 +132,8 @@ export function CreateRecipeForm() {
                     type="text"
                     id="recipe-title"
                     name="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                     required={true}
                     placeholder="Es: Pasta al pesto"
                 />
@@ -21,9 +144,10 @@ export function CreateRecipeForm() {
                     id="recipe-description"
                     name="description"
                     required={true}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                     rows={2}
                     placeholder="Descrivi la ricetta..."
-                    defaultValue={""}
                 />
             </div>
             <div className="recipe-form-group">
@@ -33,54 +157,77 @@ export function CreateRecipeForm() {
                     id="recipe-image"
                     name="image"
                     required={true}
-                    min={1}
+                    value={image}
+                    onChange={(e) => setImage(Number(e.target.value))}
                     placeholder="Es: 1"
+                    min={1}
                 />
             </div>
             <div className="recipe-form-group">
-                <label htmlFor="recipe-instructions">Istruzioni di preparazione*</label>
+                <label htmlFor="recipe-instructions">Istruzioni di preparazione* (formato: "Step1, Step2...")</label>
                 <textarea
                     id="recipe-instructions"
                     name="instructions"
                     required={true}
+                    value={instructions}
+                    onChange={(e) => setInstructions(e.target.value)}
                     rows={6}
                     placeholder="Descrivi i passaggi..."
-                    defaultValue={""}
                 />
             </div>
             <div className="recipe-form-row">
                 <div className="recipe-form-group half">
                     <label htmlFor="prep-time">Tempo di preparazione (min)*</label>
-                    <input type="number" id="prep-time" name="prepTime" min={1} required={true}/>
+                    <input type="number" id="prep-time" name="prepTime" min={1} required={true} value={preparationTime}
+                           onChange={(e) => setPreparationTime(Number(e.target.value))}/>
                 </div>
                 <div className="recipe-form-group half">
                     <label htmlFor="servings">Numero di porzioni*</label>
-                    <input type="number" id="servings" name="servings" min={1} required={true}/>
+                    <input type="number" id="servings" name="servings" min={1} required={true} value={servings}
+                           onChange={(e) => setServings(Number(e.target.value))}/>
                 </div>
             </div>
             <div className="recipe-form-group">
                 <label>Ingredienti*</label>
                 <div className="ingredients-container">
-                    <div className="ingredient-item">
-                        <select name="ingredients[0][id]" required={true}>
-                            <option value="">Seleziona ingrediente</option>
-                            <option value={1}>Farina</option>
-                            <option value={2}>Uova</option>
-                            <option value={3}>Zucchero</option>
-                            <option value={4}>Latte</option>
-                            <option value={5}>Burro</option>
-                        </select>
-                        <input
-                            type="text"
-                            name="ingredients[0][quantity]"
-                            placeholder="Quantità"
-                            required={true}
-                        />
-                        <button type="button" className="remove-button">
-                            ×
-                        </button>
-                    </div>
-                    <button type="button" className="add-button">
+
+                    {ingredients.map((ingredient, index) => (
+                        <div className="ingredient-item" key={index}>
+                            <select name={`ingredients[${index}][id]`} required={true}
+                                    value={ingredient.id}
+                                    onChange={(e) => {
+                                        const newIngredients = [...ingredients];
+                                        newIngredients[index].id = Number(e.target.value);
+                                        const selectedIngredient = ingredientList.find(ing => ing.id === Number(e.target.value));
+                                        newIngredients[index].name = selectedIngredient ? selectedIngredient.name : "";
+                                        setIngredients(newIngredients);
+                                    }}>
+                                <option value="">Seleziona ingrediente</option>
+                                {ingredientList.map((ingredient) => (
+                                    <option key={ingredient.id} value={ingredient.id}>
+                                        {ingredient.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <input
+                                type="text"
+                                name={`ingredients[${index}][quantity]`}
+                                placeholder="Quantità"
+                                required={true}
+                                value={ingredient.quantity}
+                                onChange={(e) => {
+                                    const newIngredients = [...ingredients];
+                                    newIngredients[index].quantity = e.target.value;
+                                    setIngredients(newIngredients);
+                                }}
+                            />
+                            <button type="button" className="remove-button"
+                                    onClick={() => handleRemoveIngredient(index)}>
+                                ×
+                            </button>
+                        </div>
+                    ))}
+                    <button type="button" className="add-button" onClick={handleAddIngredient}>
                         + Aggiungi ingrediente
                     </button>
                 </div>
@@ -88,50 +235,29 @@ export function CreateRecipeForm() {
             <div className="recipe-form-group">
                 <label>Categorie*</label>
                 <div className="categories-container">
-                    <div className="category-option">
-                        <input
-                            type="checkbox"
-                            id="category-1"
-                            name="categories[]"
-                            defaultValue={1}
-                        />
-                        <label htmlFor="category-1">Breakfast</label>
-                    </div>
-                    <div className="category-option">
-                        <input
-                            type="checkbox"
-                            id="category-2"
-                            name="categories[]"
-                            defaultValue={2}
-                        />
-                        <label htmlFor="category-2">Appetizer</label>
-                    </div>
-                    <div className="category-option">
-                        <input
-                            type="checkbox"
-                            id="category-3"
-                            name="categories[]"
-                            defaultValue={3}
-                        />
-                        <label htmlFor="category-3">Main Course</label>
-                    </div>
-                    <div className="category-option">
-                        <input
-                            type="checkbox"
-                            id="category-4"
-                            name="categories[]"
-                            defaultValue={4}
-                        />
-                        <label htmlFor="category-4">Dessert</label>
-                    </div>
+                    {
+                        categoryList.map((category) => (
+                            <div className="category-option" key={category.id}>
+                                <input
+                                    type="checkbox"
+                                    id={`category-${category.id}`}
+                                    name="categories[]"
+                                    value={category.id}
+                                    checked={selectedCategories.some(cat => cat.id === category.id)}
+                                    onChange={(e) => handleCategoryChange(category, e.target.checked)}
+                                />
+                                <label htmlFor={`category-${category.id}`}>{category.name}</label>
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
             <div className="recipe-form-actions">
-                <button type="submit" className="submit-btn">
-                    Pubblica ricetta
-                </button>
                 <button type="reset" className="reset-btn">
                     Annulla
+                </button>
+                <button type="submit" className="submit-btn">
+                    Pubblica ricetta
                 </button>
             </div>
         </form>
