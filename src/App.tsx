@@ -1,25 +1,25 @@
 import './App.css'
-import {createContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Home} from "./Home.tsx";
 import {Login} from "./Login.tsx";
-import {Header} from "./Header.tsx";
-import {CreateRecipeForm} from "./CreateRecipeForm.tsx";
-import {Profile} from "./Profile.tsx";
-import {RecipeDetails} from "./RecipeDetails.tsx";
+import type {Recipe, User} from "./data/data-model.ts";
 import {UserRecipes} from "./UserRecipes.tsx";
-import type {Recipe} from "./data/data-model.ts";
 import {Footer} from "./Footer.tsx";
+import {RecipeDetails} from "./RecipeDetails.tsx";
+import {Profile} from "./Profile.tsx";
+import {CreateRecipeForm} from "./CreateRecipeForm.tsx";
+import {Header} from "./Header.tsx";
+import {UserContext} from './UserContext.ts';
 
-export const UserContext = createContext<string>("");
 export type ActiveView = "Home" | "Publish" | "Profile" | "Recipe Detail" | "User Recipes";
 
 interface SessionData {
-    username: string
+    user: User | null
     message: string
 }
 
 function App() {
-    const [currentUser, setCurrentUser] = useState("");  //utente loggato
+    const [currentUser, setCurrentUser] = useState<User | null>(null);  //utente loggato
     const [error, setError] = useState<string | null>(null);
     const [currentView, setCurrentView] = useState<ActiveView>("Home");
     const [user, setUser] = useState("");  //utente di cui si vogliono vedere le ricette
@@ -55,7 +55,7 @@ function App() {
     }
 
     useEffect(() => {
-        if (currentUser.length > 0) { // solo se utente loggato
+        if (currentUser) { // solo se utente loggato
             let valid = true;
             fetch(`http://localhost:7777/recipes`, {
                 credentials: "include",
@@ -80,7 +80,7 @@ function App() {
             .then(res => res.json())
             .then((s: SessionData) => {
                 if (valid) {
-                    setCurrentUser(s.username)
+                    setCurrentUser(s.user);
                 }
             });
         return () => {
@@ -91,7 +91,7 @@ function App() {
     useEffect(checkConnection, []);
 
     return (<UserContext.Provider value={currentUser}>
-        {(currentUser.length > 0 ?
+        {(currentUser ?
                 <>
                     <Header onLogout={() => {
                         fetch("http://localhost:7777/session/logout", {
@@ -99,7 +99,7 @@ function App() {
                         })
                             .then(res => res.json())
                             .then((sd: SessionData) => {
-                                setCurrentUser(sd.username);
+                                setCurrentUser(sd.user);
                             });
                     }} currentView={currentView} onChangeView={handleCurrentView}
                             onChangeRecipeList={handleRecipeListChange}/>
@@ -130,7 +130,7 @@ function App() {
                             else throw new Error("Credenziali non valide");
                         })
                         .then((sd: SessionData) => {
-                            setCurrentUser(sd.username);
+                            setCurrentUser(sd.user);
                             setError(null);
                         })
                         .catch(err => {

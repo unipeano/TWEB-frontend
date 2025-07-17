@@ -1,7 +1,7 @@
 import "./CreateRecipeForm.css";
 import {useContext, useEffect, useState} from "react";
 import type {Category, Ingredient, Recipe} from "./data/data-model.ts";
-import {UserContext} from "./App.tsx";
+import {UserContext} from "./UserContext.ts";
 
 interface CreateRecipeFormProps {
     onChangeRecipeList: (recipeList: Recipe[]) => void;
@@ -29,7 +29,7 @@ export function CreateRecipeForm({onChangeRecipeList}: CreateRecipeFormProps) {
         event.preventDefault();
         const recipeData: Recipe = {
             id: 0,
-            author: user,
+            author: user!.username,
             title,
             description,
             image: image + ".png",

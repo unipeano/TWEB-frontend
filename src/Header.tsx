@@ -1,7 +1,8 @@
 import {type ReactElement, useContext, useState} from "react";
 import "./Header.css"
-import {type ActiveView, UserContext} from "./App.tsx";
+import {type ActiveView} from "./App.tsx";
 import type {Recipe} from "./data/data-model.ts";
+import {UserContext} from "./UserContext.ts";
 
 interface SearchFormProps {
     onChangeView: (view: ActiveView) => void;
@@ -72,8 +73,8 @@ export function Header({onLogout, currentView, onChangeView, onChangeRecipeList}
         </div>
         <nav className="user-nav">
             <div className="nav-item"
-                 onClick={() => onChangeView("Profile")}>{user}</div>
-            {(user.length > 0 ?
+                 onClick={() => onChangeView("Profile")}>{user?.username}</div>
+            {(user ?
                 <div className="nav-item" onClick={() => onLogout()}>Esci</div>
                 :
                 <></>)}
