@@ -19,6 +19,7 @@ export function CreateRecipeForm() {
     const [ingredientList, setIngredientList] = useState<Ingredient[]>([]);
     const [categoryList, setCategoryList] = useState<Category[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -42,13 +43,18 @@ export function CreateRecipeForm() {
             },
             body: JSON.stringify(recipeData),
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok)
+                    return response.json()
+                else throw new Error("A recipe with the same title by the same author already exists.");
+            })
             .then(data => {
                 console.log('Success:', data);
+                setError(null);
                 handleReset();
             })
             .catch((error) => {
-                console.error('Error:', error);
+                setError(error.message);
             });
     }
 
@@ -66,6 +72,7 @@ export function CreateRecipeForm() {
             quantity: ""
         }]);
         setSelectedCategories([]);
+        setError(null);
     }
 
     function handleCategoryChange(category: Category, checked: boolean) {
@@ -259,6 +266,11 @@ export function CreateRecipeForm() {
                 <button type="submit" className="submit-btn">
                     Pubblica ricetta
                 </button>
+                {error && (
+                    <div className="error-message">
+                        {error}
+                    </div>
+                )}
             </div>
         </form>
     );
