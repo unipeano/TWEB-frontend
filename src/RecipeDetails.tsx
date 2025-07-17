@@ -12,6 +12,11 @@ interface RecipeDetailsProps {
 
 export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: RecipeDetailsProps) {
     const [showModal, setShowModal] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    function handleError(errorMessage: string | null) {
+        setError(errorMessage);
+    }
 
     function handleUserClick() {
         if (currentRecipe) {
@@ -22,7 +27,6 @@ export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: Recip
 
     // duplicated also in RecipeITEM
     function handleAddRecipe(recipeBookId: number) {
-        setShowModal(false);
         // la fetch seguente ritorna Void, serve che restituisca qualcosa=?
         fetch(`http://localhost:7777/me/recipebooks/${recipeBookId}/recipes`, {
             method: "POST",
@@ -38,13 +42,14 @@ export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: Recip
         });*/.then(res => {
             if (res.ok) {
                 console.log("Recipe added to recipe book successfully.");
+                setError(null);
+                setShowModal(false);
             } else {
-                console.error("Failed to add recipe to recipe book.");
                 throw new Error("The recipe is already in the recipe book.");
-                //display in the modal that the recipe is already in the recipe book
             }
         })
-            .catch(error => console.log(error));
+            .catch(error => setError(error.message));
+
     }
 
     return (<div className="recipe-details-container">
@@ -147,7 +152,8 @@ export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: Recip
             </div>
             {showModal && <AddToRecipeBookModal recipeTitle={currentRecipe?.title}
                                                 onCancel={() => setShowModal(false)}
-                                                onConfirm={(id) => handleAddRecipe(id)}/>}
+                                                onConfirm={handleAddRecipe}
+                                                error={error} onError={handleError}/>}
         </div>
     );
 }

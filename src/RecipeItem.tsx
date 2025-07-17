@@ -102,7 +102,7 @@ export function RecipeItem({
             </div>
             {showModal && <AddToRecipeBookModal recipeTitle={recipe.title}
                                                 onCancel={() => setShowModal(false)}
-                                                onConfirm={(id) => handleAddRecipe(id)}
+                                                onConfirm={handleAddRecipe}
                                                 error={error} onError={handleError}/>}
         </div>
     );
