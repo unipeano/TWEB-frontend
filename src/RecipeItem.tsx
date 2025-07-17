@@ -21,6 +21,7 @@ export function RecipeItem({
                                                                         key={c.id}>{c.name}</span>);
 
     const [showModal, setShowModal] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     function handleAuthorClick() {
         onChangeUser(recipe.author);
@@ -34,7 +35,6 @@ export function RecipeItem({
 
 
     function handleAddRecipe(recipeBookId: number) {
-        setShowModal(false);
         // la fetch seguente ritorna Void, serve che restituisca qualcosa=?
         fetch(`http://localhost:7777/me/recipebooks/${recipeBookId}/recipes`, {
             method: "POST",
@@ -50,16 +50,20 @@ export function RecipeItem({
         });*/.then(res => {
             if (res.ok) {
                 console.log("Recipe added to recipe book successfully.");
+                setError(null);
+                setShowModal(false);
             } else {
-                console.error("Failed to add recipe to recipe book.");
                 throw new Error("The recipe is already in the recipe book.");
-                //display in the modal that the recipe is already in the recipe book
             }
         })
-            .catch(error => console.log(error));
+            .catch(error => setError(error.message));
+
     }
 
-    // nell'onchangeview devo fare il setdellacurrentrecipe in modo da passargliela all'App
+    function handleError(errorMessage: string | null) {
+        setError(errorMessage);
+    }
+
     return (
         <div className="recipe-item" data-recipeid={recipe.id}>
             <img
@@ -98,7 +102,8 @@ export function RecipeItem({
             </div>
             {showModal && <AddToRecipeBookModal recipeTitle={recipe.title}
                                                 onCancel={() => setShowModal(false)}
-                                                onConfirm={(id) => handleAddRecipe(id)}/>}
+                                                onConfirm={(id) => handleAddRecipe(id)}
+                                                error={error} onError={handleError}/>}
         </div>
     );
 }

@@ -43,6 +43,7 @@
 .add-to-recipebook-modal-body p {
     margin-bottom: 20px;
     color: #555;
+    font-size: 1rem;
 }
 
 .modal-recipe-title {
