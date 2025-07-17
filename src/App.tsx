@@ -109,7 +109,7 @@ function App() {
                                   onChangeView={handleCurrentView}
                                   onChangeRecipe={handleRecipeChange}
                             />}
-                        {currentView === "Publish" && <CreateRecipeForm/>}
+                        {currentView === "Publish" && <CreateRecipeForm onChangeRecipeList={handleRecipeListChange}/>}
                         {currentView === "Profile" && <Profile onChangeView={handleCurrentView}/>}
                         {currentView === "Recipe Detail" &&
                             <RecipeDetails currentRecipe={currentRecipe} onChangeView={handleCurrentView}

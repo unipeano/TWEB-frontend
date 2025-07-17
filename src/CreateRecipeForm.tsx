@@ -3,7 +3,11 @@ import {useContext, useEffect, useState} from "react";
 import type {Category, Ingredient, Recipe} from "./data/data-model.ts";
 import {UserContext} from "./App.tsx";
 
-export function CreateRecipeForm() {
+interface CreateRecipeFormProps {
+    onChangeRecipeList: (recipeList: Recipe[]) => void;
+}
+
+export function CreateRecipeForm({onChangeRecipeList}: CreateRecipeFormProps) {
     const user = useContext(UserContext);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -48,9 +52,10 @@ export function CreateRecipeForm() {
                     return response.json()
                 else throw new Error("A recipe with the same title by the same author already exists.");
             })
-            .then(data => {
-                console.log('Success:', data);
+            .then((recipeList: Recipe[]) => {
+                console.log('Success:', recipeList);
                 setError(null);
+                onChangeRecipeList(recipeList);
                 handleReset();
             })
             .catch((error) => {
