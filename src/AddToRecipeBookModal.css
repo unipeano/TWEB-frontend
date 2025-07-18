@@ -100,27 +100,6 @@
     color: #777;
 }
 
-.new-recipebook-option {
-    padding: 10px 0;
-}
-
-.btn-text {
-    background: none;
-    border: none;
-    color: #3498db;
-    cursor: pointer;
-    font-size: 0.95rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 5px;
-    font-weight: normal;
-}
-
-.btn-text:hover {
-    text-decoration: underline;
-    background-color: white;
-}
 
 .modal-footer {
     display: flex;

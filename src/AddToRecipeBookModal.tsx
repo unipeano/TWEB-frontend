@@ -67,12 +67,7 @@ export function AddToRecipeBookModal({onConfirm, onCancel, recipeTitle, error, o
                     }
                 </div>
 
-                <div className="new-recipebook-option">
-                    <button className="btn-text" id="create-new-recipebook">
-                        <img className="icons" alt="add"
-                             src="/add.png"/> Crea nuovo ricettario
-                    </button>
-                </div>
+                
             </div>
             <div className="modal-footer">
                 <button className="modal-btn modal-btn-secondary modal-close-modal" onClick={handleCancel}>Annulla
