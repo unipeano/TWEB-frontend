@@ -8,9 +8,10 @@ import type {Recipe, RecipeBook} from "./data/data-model.ts";
 interface RecipeBookNavProps {
     activeRecipeBook: string;
     onChangeRecipeBook: (name: string) => void;
+    recipeBookRecipes: Recipe[];
 }
 
-export function RecipeBookNav({activeRecipeBook, onChangeRecipeBook}: RecipeBookNavProps) {
+export function RecipeBookNav({activeRecipeBook, onChangeRecipeBook, recipeBookRecipes}: RecipeBookNavProps) {
     const [recipeBookList, setRecipeBookList] = useState<RecipeBook[]>([]);
     const user = useContext(UserContext);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -57,14 +58,12 @@ export function RecipeBookNav({activeRecipeBook, onChangeRecipeBook}: RecipeBook
             .then((recipeBookList: RecipeBook[]) => {
                 if (valid) {
                     setRecipeBookList(recipeBookList);
-                    console.log(recipeBookList);
                 }
             });
         return () => {
             valid = false;
         };
     }, []);
-    console.log(recipeBookList);
 
     return (
         <div className="recipebooks-nav">
@@ -75,8 +74,8 @@ export function RecipeBookNav({activeRecipeBook, onChangeRecipeBook}: RecipeBook
                              key={recipeBook.id}
                              onClick={() => onChangeRecipeBook(recipeBook.name)}>
                             {recipeBook.name}
-                            <span
-                                className="count">{recipeBook?.recipes ? recipeBook.recipes.length : 0}</span>
+                            {activeRecipeBook === recipeBook.name ? <span
+                                className="count">{recipeBookRecipes.length}</span> : null}
                         </div>
                     ))
                 )
@@ -153,7 +152,8 @@ export function Profile({onChangeView}: ProfileProps) {
                 </div>
 
                 <RecipeBookNav activeRecipeBook={activeRecipeBook}
-                               onChangeRecipeBook={(name: string) => setActiveRecipeBook(name)}/>
+                               onChangeRecipeBook={(name: string) => setActiveRecipeBook(name)}
+                               recipeBookRecipes={recipeBookRecipes}/>
 
                 <div className="recipebook-content">
                     <div className="recipes-grid">

@@ -35,6 +35,11 @@
     color: #333;
 }
 
+.close-modal {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #7f8c8d;
+}
 
 .add-to-recipebook-modal-body {
     padding: 20px;
