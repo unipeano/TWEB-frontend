@@ -4,6 +4,7 @@ import {type ActiveView} from "./App.tsx";
 import {AddToRecipeBookModal} from "./AddToRecipeBookModal.tsx";
 import {useContext, useState} from "react";
 import {UserContext} from "./UserContext.ts";
+import {DeleteModal} from "./DeleteModal.tsx";
 
 interface RecipeDetailsProps {
     currentRecipe: Recipe | null;
@@ -15,6 +16,7 @@ export function RecipeDetails({currentRecipe, onChangeView, author}: RecipeDetai
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const user = useContext(UserContext);
+    const [showDelete, setShowDelete] = useState(false);
 
     function handleError(errorMessage: string | null) {
         setError(errorMessage);
@@ -86,7 +88,7 @@ export function RecipeDetails({currentRecipe, onChangeView, author}: RecipeDetai
                     {user?.role !== 'ADMIN' ? <button className="details-add-to-recipebook" title="Add to recipebook"
                                                       onClick={() => setShowModal(true)}>+
                     </button> : <div className="delete-recipe det" title="Delete recipe"
-                    >
+                                     onClick={() => setShowDelete(true)}>
                         <img className="details-icons" alt="delete"
                              src="/bin.png"/>
                     </div>}
@@ -159,6 +161,7 @@ export function RecipeDetails({currentRecipe, onChangeView, author}: RecipeDetai
                                                 onCancel={() => setShowModal(false)}
                                                 onConfirm={handleAddRecipe}
                                                 error={error} onError={handleError}/>}
+            {showDelete && <DeleteModal onCancel={() => setShowDelete(false)}/>}
         </div>
     );
 }

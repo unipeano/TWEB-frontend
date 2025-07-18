@@ -3,6 +3,7 @@ import {type ReactElement, useContext, useState} from "react";
 import {type ActiveView} from "./App.tsx";
 import {AddToRecipeBookModal} from "./AddToRecipeBookModal.tsx";
 import {UserContext} from "./UserContext.ts";
+import {DeleteModal} from "./DeleteModal.tsx";
 
 interface RecipeItemProps {
     recipe: Recipe;
@@ -24,6 +25,7 @@ export function RecipeItem({
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const user = useContext(UserContext);
+    const [showDelete, setShowDelete] = useState(false);
 
     function handleAuthorClick() {
         if (recipe.author === user?.username) {
@@ -87,7 +89,7 @@ export function RecipeItem({
                     {user?.role !== 'ADMIN' ? <button className="add-to-recipebook" title="Add to recipebook"
                                                       onClick={() => setShowModal(true)}>+
                     </button> : <div className="delete-recipe" title="Delete recipe"
-                    >
+                                     onClick={() => setShowDelete(true)}>
                         <img className="icons" alt="delete"
                              src="/bin.png"/>
                     </div>}
@@ -118,6 +120,7 @@ export function RecipeItem({
                                                 onCancel={() => setShowModal(false)}
                                                 onConfirm={handleAddRecipe}
                                                 error={error} onError={handleError}/>}
+            {showDelete && <DeleteModal onCancel={() => setShowDelete(false)}/>}
         </div>
     );
 }
