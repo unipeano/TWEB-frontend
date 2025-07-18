@@ -83,9 +83,13 @@ export function RecipeDetails({currentRecipe, onChangeView, author}: RecipeDetai
       </span>
                 </div>
                 <div className="meta-details-item add">
-                    <button className="details-add-to-recipebook" title="Add to recipebook"
-                            onClick={() => setShowModal(true)}>+
-                    </button>
+                    {user?.role !== 'ADMIN' ? <button className="details-add-to-recipebook" title="Add to recipebook"
+                                                      onClick={() => setShowModal(true)}>+
+                    </button> : <div className="delete-recipe det" title="Delete recipe"
+                    >
+                        <img className="details-icons" alt="delete"
+                             src="/bin.png"/>
+                    </div>}
                 </div>
             </div>
             <div className="recipe-details-content">

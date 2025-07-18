@@ -192,3 +192,25 @@
     border-radius: 20px;
     font-size: 0.8rem;
 }
+
+.delete-recipe {
+    background-color: #f5f5f5;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-recipe.det {
+    padding: 10px;
+}
+
+.delete-recipe:hover {
+    background-color: #ffebee;
+    border-color: #e74c3c;
+}

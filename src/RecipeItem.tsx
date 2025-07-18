@@ -84,9 +84,13 @@ export function RecipeItem({
             <div className="recipe-content">
                 <div className="recipe-header">
                     <h3 className="recipe-title">{recipe.title}</h3>
-                    <button className="add-to-recipebook" title="Add to recipebook"
-                            onClick={() => setShowModal(true)}>+
-                    </button>
+                    {user?.role !== 'ADMIN' ? <button className="add-to-recipebook" title="Add to recipebook"
+                                                      onClick={() => setShowModal(true)}>+
+                    </button> : <div className="delete-recipe" title="Delete recipe"
+                    >
+                        <img className="icons" alt="delete"
+                             src="/bin.png"/>
+                    </div>}
                 </div>
                 <div className="recipe-categories">
                     {categories}
