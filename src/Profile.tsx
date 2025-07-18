@@ -43,7 +43,6 @@ export function RecipeBookNav({activeRecipeBook, onChangeRecipeBook, recipeBookR
             })
             .then((recipeBook: RecipeBook) => {
                 setRecipeBookList(prev => [...prev, recipeBook]);
-                console.log(recipeBook);
                 setShowModal(false);
                 setError(null);
             }).catch(error => setError(error.message));
@@ -114,7 +113,6 @@ export function Profile({onChangeView}: ProfileProps) {
             .then((recipeList: Recipe[]) => {  // ATTENTION: recipe without categories and ingredients!!
                 if (valid) {
                     setRecipeBookRecipes(recipeList);
-                    console.log(recipeList);
                 }
             });
         return () => {

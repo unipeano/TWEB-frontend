@@ -24,7 +24,6 @@ export function AddToRecipeBookModal({onConfirm, onCancel, recipeTitle, error, o
                 if (valid) {
                     setRecipeBookList(recipeBookList);
                     setCurrentId(recipeBookList[1].id);
-                    console.log(recipeBookList);
                 }
             });
         return () => {
@@ -67,7 +66,7 @@ export function AddToRecipeBookModal({onConfirm, onCancel, recipeTitle, error, o
                     }
                 </div>
 
-                
+
             </div>
             <div className="modal-footer">
                 <button className="modal-btn modal-btn-secondary modal-close-modal" onClick={handleCancel}>Annulla

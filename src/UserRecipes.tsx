@@ -28,7 +28,6 @@ export function UserRecipes({
             .then((recipes: Recipe[]) => {
                 if (valid) {
                     setUserRecipes(recipes);
-                    console.log(recipes);
                 }
             });
         return () => {

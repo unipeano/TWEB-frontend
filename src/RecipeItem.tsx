@@ -60,7 +60,6 @@ export function RecipeItem({
             /*console.log(data)
         });*/.then(res => {
             if (res.ok) {
-                console.log("Recipe added to recipe book successfully.");
                 setError(null);
                 setShowModal(false);
             } else {

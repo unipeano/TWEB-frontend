@@ -53,7 +53,6 @@ export function CreateRecipeForm({onChangeRecipeList}: CreateRecipeFormProps) {
                 else throw new Error("A recipe with the same title by the same author already exists.");
             })
             .then((recipeList: Recipe[]) => {
-                console.log('Success:', recipeList);
                 setError(null);
                 onChangeRecipeList(recipeList);
                 handleReset();

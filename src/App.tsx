@@ -18,10 +18,10 @@ interface SessionData {
     message: string
 }
 
-const viewPermissions = {
+/*const viewPermissions = {
     ADMIN: ['Home', 'User Recipes', 'Recipe Detail'],
     USER: ['Home', 'Publish', 'Profile', 'Recipe Detail']
-};
+};*/
 
 
 function App() {
@@ -117,31 +117,31 @@ function App() {
                             onChangeRecipeList={handleRecipeListChange}/>
                     <div className="central-area">
 
-                        {(currentUser.role === 'ADMIN' ?
+                        {/*{(currentUser.role === 'ADMIN' ?
                                 viewPermissions.ADMIN :
                                 viewPermissions.USER
                         ).includes(currentView) && (
-                            <>
-                                {currentView === "Home" &&
-                                    <Home recipeList={recipeList}
-                                          onChangeAuthor={handleAuthorChange}
-                                          onChangeView={handleCurrentView}
-                                          onChangeRecipe={handleRecipeChange}
-                                    />}
-                                {currentView === "Publish" &&
-                                    <CreateRecipeForm onChangeRecipeList={handleRecipeListChange}/>}
-                                {currentView === "Profile" &&
-                                    <Profile onChangeView={handleCurrentView}/>}
-                                {currentView === "User Recipes" &&
-                                    <UserRecipes onChangeView={handleCurrentView}
-                                                 onChangeRecipe={handleRecipeChange}
-                                                 author={currentAuthor}/>}
-                                {currentView === "Recipe Detail" &&
-                                    <RecipeDetails currentRecipe={currentRecipe}
-                                                   onChangeView={handleCurrentView}
-                                                   author={currentAuthor}/>}
-                            </>
-                        )}
+                            <>*/}
+                        {currentView === "Home" &&
+                            <Home recipeList={recipeList}
+                                  onChangeAuthor={handleAuthorChange}
+                                  onChangeView={handleCurrentView}
+                                  onChangeRecipe={handleRecipeChange}
+                            />}
+                        {currentView === "Publish" &&
+                            <CreateRecipeForm onChangeRecipeList={handleRecipeListChange}/>}
+                        {currentView === "Profile" &&
+                            <Profile onChangeView={handleCurrentView}/>}
+                        {currentView === "User Recipes" &&
+                            <UserRecipes onChangeView={handleCurrentView}
+                                         onChangeRecipe={handleRecipeChange}
+                                         author={currentAuthor}/>}
+                        {currentView === "Recipe Detail" &&
+                            <RecipeDetails currentRecipe={currentRecipe}
+                                           onChangeView={handleCurrentView}
+                                           author={currentAuthor}/>}
+                        {/*</>
+                        )}*/}
 
                         <Footer/>
                     </div>
