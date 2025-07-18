@@ -1,69 +1,185 @@
 import "./Profile.css";
 import {CreateRecipeBookForm} from "./CreateRecipeBookForm.tsx";
-import {useContext} from "react";
-import {UserContext} from "./App.tsx";
+import {useContext, useEffect, useState} from "react";
+import {type ActiveView} from "./App.tsx";
+import {UserContext} from "./UserContext.ts";
+import type {Recipe, RecipeBook} from "./data/data-model.ts";
 
-export function Profile() {
+interface RecipeBookNavProps {
+    activeRecipeBook: string;
+    onChangeRecipeBook: (name: string) => void;
+}
+
+export function RecipeBookNav({activeRecipeBook, onChangeRecipeBook}: RecipeBookNavProps) {
+    const [recipeBookList, setRecipeBookList] = useState<RecipeBook[]>([]);
     const user = useContext(UserContext);
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+
+    function handleError(errorMessage: string | null) {
+        setError(errorMessage);
+    }
+
+    function handleAddRecipeBook(name: string) {
+        const newRecipeBook = {
+            id: 0, // L'ID sarà generato dal server
+            name: name,
+            recipeBookOwner: user!.username,
+        };
+
+        fetch(`http://localhost:7777/me/recipebooks`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newRecipeBook),
+        })
+            .then(response => {
+                if (response.ok)
+                    return response.json();
+                else throw Error("A recipe book with the same name by the same author already exists.");
+            })
+            .then((recipeBook: RecipeBook) => {
+                setRecipeBookList(prev => [...prev, recipeBook]);
+                console.log(recipeBook);
+                setShowModal(false);
+                setError(null);
+            }).catch(error => setError(error.message));
+    }
+
+    useEffect(() => {
+        let valid = true;
+        fetch(`http://localhost:7777/me/recipebooks`, {
+            credentials: "include",
+        })
+            .then(response => response.json())
+            .then((recipeBookList: RecipeBook[]) => {
+                if (valid) {
+                    setRecipeBookList(recipeBookList);
+                    console.log(recipeBookList);
+                }
+            });
+        return () => {
+            valid = false;
+        };
+    }, []);
+    console.log(recipeBookList);
+
+    return (
+        <div className="recipebooks-nav">
+            {
+                (
+                    recipeBookList.map((recipeBook) => (
+                        <div className={`recipebook-tab ${activeRecipeBook === recipeBook.name ? "active" : ""}`}
+                             key={recipeBook.id}
+                             onClick={() => onChangeRecipeBook(recipeBook.name)}>
+                            {recipeBook.name}
+                            <span
+                                className="count">{recipeBook?.recipes ? recipeBook.recipes.length : 0}</span>
+                        </div>
+                    ))
+                )
+            }
+
+            <div className="add-recipebook" onClick={() => setShowModal(true)}>
+                <img className="icons" alt="add"
+                     src="/add.png"/>
+                Nuovo
+            </div>
+
+            {showModal && <CreateRecipeBookForm onConfirm={handleAddRecipeBook} onCancel={() => setShowModal(false)}
+                                                error={error} onError={handleError}
+            />}
+        </div>
+    );
+}
+
+
+interface ProfileProps {
+    onChangeView: (view: ActiveView) => void;
+}
+
+export function Profile({onChangeView}: ProfileProps) {
+    const user = useContext(UserContext);
+    const [recipeBookRecipes, setRecipeBookRecipes] = useState<Recipe[]>([]);
+    const [activeRecipeBook, setActiveRecipeBook] = useState("My recipes");
+
+
+    useEffect(() => {
+        let valid = true;
+        fetch(`http://localhost:7777/users/${user?.username}/recipebooks/${activeRecipeBook}/recipes`, {
+            credentials: "include",
+        })
+            .then(response => response.json())
+            .then((recipeList: Recipe[]) => {  // ATTENTION: recipe without categories and ingredients!!
+                if (valid) {
+                    setRecipeBookRecipes(recipeList);
+                    console.log(recipeList);
+                }
+            });
+        return () => {
+            valid = false;
+        };
+    }, [user, activeRecipeBook]);
+
     return (<>
             <div className="profile-container">
                 <div className="profile-header">
-                    <img src="/image/users/1.jpg" alt="Avatar" className="avatar"/>
+                    <img
+                        src={`/image/users/${user?.image}`}
+                        alt="Avatar"
+                        className={`avatar ${user?.role === "CHEF" ? 'avatar-chef' : ''}`}
+                    />
                     <div className="user-info">
-                        <h1>{user}</h1>
+                        <h1>
+                            {user?.username}
+                        </h1>
                         <p className="user-meta">
-                            {"{"}description{"}"}
+                            {user?.description}
                         </p>
                     </div>
+
+                    {user?.role === "CHEF" && (
+                        <div className="chef-badge" title="Chef professionista">
+                            <img
+                                className="chef-icon"
+                                src="/star.png"
+                                alt="Chef"
+                            />
+                            <span className="chef-label">Chef Certificato</span>
+                        </div>
+                    )}
                 </div>
-                <div className="recipebooks-nav">
-                    <div className="recipebook-tab active">
-                        Le mie ricette <span className="count">1</span>
-                    </div>
-                    <div className="recipebook-tab ">
-                        Preferiti <span className="count">0</span>
-                    </div>
-                    <div className="add-recipebook">
-                        <img className="icons" alt="add"
-                             src="/add.png"/>
-                        Nuovo
-                    </div>
-                </div>
+
+                <RecipeBookNav activeRecipeBook={activeRecipeBook}
+                               onChangeRecipeBook={(name: string) => setActiveRecipeBook(name)}/>
+
                 <div className="recipebook-content">
-                    <div className="recipebook-header">
-                        <h2>Le mie ricette</h2>
-                        {/*div class="cookbook-actions">
-    <button class="btn btn-outline">
-      <i class="fas fa-sort"></i> Ordina
-    </button>
-    <button class="btn btn-outline">
-      <i class="fas fa-filter"></i> Filtra
-    </button>
-  </div*/}
-                    </div>
                     <div className="recipes-grid">
-                        <a href="recipe-details.html">
-                            <div className="recipe-card">
+                        {recipeBookRecipes.map((recipe) => (
+                            <div className="recipe-card" key={recipe.id} onClick={() => {
+                                onChangeView("Recipe Detail"); // adjust
+                            }}>
                                 <img
-                                    src="/image/recipes/1.png"
-                                    alt="Spaghetti with tomato sauce"
+                                    src={`/image/recipes/${recipe.image}`}
+                                    alt={recipe.title}
                                     className="recipe-image"
                                 />
                                 <div className="recipe-info">
-                                    <h3 className="recipebook-recipe-title">Spaghetti with tomato sauce</h3>
+                                    <h3 className="recipebook-recipe-title">{recipe.title}</h3>
                                     <div className="recipebook-recipe-meta">
-                <span>
-                  <img className="icons" alt="bin"
-                       src="/bin.png"/>
-                </span>
+                                        <span>
+                                            <img className="icons" alt="bin"
+                                                 src="/bin.png"/>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
-                        </a>
+                        ))}
                     </div>
                 </div>
             </div>
-            <CreateRecipeBookForm/>
         </>
     );
 }

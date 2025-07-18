@@ -1,5 +1,5 @@
 .recipe-book-modal {
-    display: none; /*flex*/
+    display: flex;
     position: fixed;
     top: 0;
     left: 0;
@@ -26,7 +26,7 @@
     margin-bottom: 20px;
 }
 
-.close-modal {
+.recipe-book-close-modal {
     font-size: 1.5rem;
     cursor: pointer;
     color: #7f8c8d;
