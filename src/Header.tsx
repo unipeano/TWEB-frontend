@@ -61,19 +61,26 @@ export function Header({onLogout, currentView, onChangeView, onChangeRecipeList}
                  onClick={() => onChangeView("Home")}>
                 Home
             </div>
-            <div className={"publish" + (currentView === "Publish" ? " active" : "")}
-                 onClick={() => onChangeView("Publish")}>
-                Pubblica
-            </div>
-            <div className={"profile" + (currentView === "Profile" ? " active" : "")}
-                 onClick={() => onChangeView("Profile")}>
-                Profilo
-            </div>
+            {user && user.role !== 'ADMIN' && (<>
+                <div className={"publish" + (currentView === "Publish" ? " active" : "")}
+                     onClick={() => onChangeView("Publish")}>
+                    Pubblica
+                </div>
+                <div className={"profile" + (currentView === "Profile" ? " active" : "")}
+                     onClick={() => onChangeView("Profile")}>
+                    Profilo
+                </div>
+            </>)
+            }
             <SearchForm onChangeView={onChangeView} onChangeRecipeList={onChangeRecipeList}/>
         </div>
         <nav className="user-nav">
             <div className="nav-item"
-                 onClick={() => onChangeView("Profile")}>{user?.username}</div>
+                 onClick={() => {
+                     if (user?.role !== 'ADMIN') onChangeView("Profile")
+                 }}>
+                {user?.username}
+            </div>
             {(user ?
                 <div className="nav-item" onClick={() => onLogout()}>Esci</div>
                 :
