@@ -2,23 +2,26 @@ import "./UserRecipes.css";
 import {RecipeItem} from "./RecipeItem.tsx";
 import type {ActiveView} from "./App.tsx";
 import {useEffect, useState} from "react";
-import type {Recipe} from "./data/data-model.ts";
+import type {Recipe, User} from "./data/data-model.ts";
 
 interface UserRecipesProps {
     onChangeView: (view: ActiveView) => void;
-    user: string;
-    onChangeUser: (user: string) => void;
+    author: User | null;
     onChangeRecipe: (recipe: Recipe) => void;
 }
 
-export function UserRecipes({user, onChangeView, onChangeUser, onChangeRecipe}: UserRecipesProps) {
+export function UserRecipes({
+                                author,
+                                onChangeView,
+                                onChangeRecipe
+                            }: UserRecipesProps) {
 
     const [userRecipes, setUserRecipes] = useState<Recipe[]>([]);
 
     // altrimenti filtro le recipes della home per author, (per usare una fetch in più)
     useEffect(() => {
         let valid = true;
-        fetch(`http://localhost:7777/recipes?author=${encodeURIComponent(user)}`, {
+        fetch(`http://localhost:7777/recipes?author=${author?.username}`, {
             credentials: "include",
         })
             .then(response => response.json())
@@ -31,26 +34,26 @@ export function UserRecipes({user, onChangeView, onChangeUser, onChangeRecipe}: 
         return () => {
             valid = false;
         };
-    }, [user]);
+    }, [author]);
 
 
     return (<div className="user-central-area">
         <div className="user-recipe-container">
             <div className="user-recipe-container-header">
                 <div className="user-image-container">
-                    <img src="/image/users/1.jpg" alt="user image" className="user-image"/>
+                    <img src={`/image/users/${author?.image}`} alt="user image" className="user-image"/>
                 </div>
                 <div className="user-info-container">
-                    <h1 className="home-recipe-container-header-title">{user}</h1>
+                    <h1 className="home-recipe-container-header-title">{author?.username}</h1>
                     <p>
-                        {"{"}description{"}"}
+                        {author?.description}
                     </p>
                 </div>
             </div>
             <div className="user-recipe-container-content">
                 <div className="recipe-collection">
                     {userRecipes.map(recipe =>
-                        <RecipeItem recipe={recipe} key={recipe.id} onChangeUser={onChangeUser}
+                        <RecipeItem recipe={recipe} key={recipe.id}
                                     onChangeView={onChangeView} onChangeRecipe={onChangeRecipe}/>)
                     }
                 </div>

@@ -51,14 +51,14 @@ function RecipeFilter({categories, filter, onApplyFilter}: RecipeFilterProps) {
 interface HomeProps {
     recipeList: Recipe[];
     onChangeView: (view: ActiveView) => void;
-    onChangeUser: (user: string) => void;
+    onChangeAuthor: (author: string) => void;
     onChangeRecipe: (recipe: Recipe) => void;
 }
 
 export function Home({
                          recipeList,
                          onChangeView,
-                         onChangeUser,
+                         onChangeAuthor,
                          onChangeRecipe,
                      }: HomeProps): ReactElement {
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -98,8 +98,9 @@ export function Home({
             <div className="recipe-container-content">
                 <div className="recipe-collection">
                     {filteredRecipes.map(recipe => (
-                        <RecipeItem recipe={recipe} key={recipe.id} onChangeUser={onChangeUser}
+                        <RecipeItem recipe={recipe} key={recipe.id}
                                     onChangeView={onChangeView} onChangeRecipe={onChangeRecipe}
+                                    onChangeAuthor={onChangeAuthor}
                         />
                     ))}
                 </div>

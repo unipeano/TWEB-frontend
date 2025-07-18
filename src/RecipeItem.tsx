@@ -7,12 +7,12 @@ import {UserContext} from "./UserContext.ts";
 interface RecipeItemProps {
     recipe: Recipe;
     onChangeView: (view: ActiveView) => void;
-    onChangeUser: (user: string) => void;
+    onChangeAuthor?: (author: string) => void;
     onChangeRecipe: (recipe: Recipe) => void;
 }
 
 export function RecipeItem({
-                               onChangeUser,
+                               onChangeAuthor,
                                onChangeView,
                                recipe,
                                onChangeRecipe,
@@ -29,7 +29,9 @@ export function RecipeItem({
         if (recipe.author === user?.username) {
             onChangeView('Profile');
         } else {
-            onChangeUser(recipe.author);
+            if (onChangeAuthor) {
+                onChangeAuthor(recipe.author);
+            }
             onChangeView('User Recipes');
         }
     }
@@ -37,6 +39,9 @@ export function RecipeItem({
     function handleRecipeClick() {
         onChangeRecipe(recipe);
         onChangeView('Recipe Detail');
+        if (onChangeAuthor) {
+            onChangeAuthor(recipe.author);
+        }
     }
 
 

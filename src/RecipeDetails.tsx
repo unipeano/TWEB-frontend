@@ -1,5 +1,5 @@
 import "./RecipeDetails.css";
-import type {Recipe} from "./data/data-model.ts";
+import type {Recipe, User} from "./data/data-model.ts";
 import {type ActiveView} from "./App.tsx";
 import {AddToRecipeBookModal} from "./AddToRecipeBookModal.tsx";
 import {useContext, useState} from "react";
@@ -8,10 +8,10 @@ import {UserContext} from "./UserContext.ts";
 interface RecipeDetailsProps {
     currentRecipe: Recipe | null;
     onChangeView: (view: ActiveView) => void;
-    onChangeUser: (user: string) => void;
+    author: User | null;
 }
 
-export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: RecipeDetailsProps) {
+export function RecipeDetails({currentRecipe, onChangeView, author}: RecipeDetailsProps) {
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const user = useContext(UserContext);
@@ -25,7 +25,6 @@ export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: Recip
             if (currentRecipe.author === user?.username) {
                 onChangeView('Profile');
             } else {
-                onChangeUser(currentRecipe.author);
                 onChangeView('User Recipes');
             }
         }
@@ -128,13 +127,10 @@ export function RecipeDetails({currentRecipe, onChangeView, onChangeUser}: Recip
                 </div>
                 <div className="sidebar">
                     <div className="author-section">
-                        <img src="/image/users/1.jpg" alt="Autore" className="author-avatar"/>
+                        <img src={`/image/users/${author?.image}`} alt="Autore" className="author-avatar"/>
                         <h3>
                             {currentRecipe?.author}
                         </h3>
-                        <p>
-                            {"{"}who's{"}"}
-                        </p>
                         <div className="action-buttons">
                             <button className="btn btn-primary" onClick={handleUserClick}>
                                 Altre ricette

@@ -22,12 +22,15 @@ function App() {
     const [currentUser, setCurrentUser] = useState<User | null>(null);  //utente loggato
     const [error, setError] = useState<string | null>(null);
     const [currentView, setCurrentView] = useState<ActiveView>("Home");
-    const [user, setUser] = useState("");  //utente di cui si vogliono vedere le ricette
+    const [currentAuthor, setCurrentAuthor] = useState<User | null>(null);  //utente di cui si vogliono vedere le ricette
     const [currentRecipe, setCurrentRecipe] = useState<Recipe | null>(null);
     const [recipeList, setRecipeList] = useState<Recipe[]>([]);
 
-    function handleUserChange(username: string) {
-        setUser(username);
+    function handleAuthorChange(author: string) {
+        fetch(`http://localhost:7777/users/${author}`, {credentials: "include"})
+            .then(res => res.json())
+            .then((user: User) => setCurrentAuthor(user))
+            .catch(console.error);
     }
 
     function handleRecipeChange(recipe: Recipe) {
@@ -101,22 +104,29 @@ function App() {
                             .then((sd: SessionData) => {
                                 setCurrentUser(sd.user);
                             });
-                    }} currentView={currentView} onChangeView={handleCurrentView}
+                    }}
+                            currentView={currentView}
+                            onChangeView={handleCurrentView}
                             onChangeRecipeList={handleRecipeListChange}/>
                     <div className="central-area">
                         {currentView === "Home" &&
-                            <Home recipeList={recipeList} onChangeUser={handleUserChange}
+                            <Home recipeList={recipeList}
+                                  onChangeAuthor={handleAuthorChange}
                                   onChangeView={handleCurrentView}
                                   onChangeRecipe={handleRecipeChange}
                             />}
-                        {currentView === "Publish" && <CreateRecipeForm onChangeRecipeList={handleRecipeListChange}/>}
-                        {currentView === "Profile" && <Profile onChangeView={handleCurrentView}/>}
+                        {currentView === "Publish" &&
+                            <CreateRecipeForm onChangeRecipeList={handleRecipeListChange}/>}
+                        {currentView === "Profile" &&
+                            <Profile onChangeView={handleCurrentView}/>}
                         {currentView === "Recipe Detail" &&
-                            <RecipeDetails currentRecipe={currentRecipe} onChangeView={handleCurrentView}
-                                           onChangeUser={handleUserChange}/>}
+                            <RecipeDetails currentRecipe={currentRecipe}
+                                           onChangeView={handleCurrentView}
+                                           author={currentAuthor}/>}
                         {currentView === "User Recipes" &&
-                            <UserRecipes user={user} onChangeUser={handleUserChange} onChangeView={handleCurrentView}
-                                         onChangeRecipe={handleRecipeChange}/>}
+                            <UserRecipes onChangeView={handleCurrentView}
+                                         onChangeRecipe={handleRecipeChange}
+                                         author={currentAuthor}/>}
                         <Footer/>
                     </div>
                 </>
@@ -136,7 +146,8 @@ function App() {
                         .catch(err => {
                             setError(err.message);
                         })
-                }} error={error}/>
+                }}
+                       error={error}/>
         )}
     </UserContext.Provider>);
 }
