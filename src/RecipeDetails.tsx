@@ -157,8 +157,8 @@ export function RecipeDetails({currentRecipe, onChangeView, author, onDeleteReci
                                                 onCancel={() => setShowModal(false)}
                                                 onConfirm={handleAddToBook}/>}
             {showDelete && <DeleteModal onCancel={() => setShowDelete(false)}
-                                        recipeTitle={currentRecipe?.title}
-                                        onDeleteRecipe={handleDeleteRecipe}/>}
+                                        name={currentRecipe?.title}
+                                        onDelete={handleDeleteRecipe}/>}
         </div>
     );
 }

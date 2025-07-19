@@ -61,7 +61,7 @@ export function Header({onLogout, currentView, onChangeView, onChangeRecipeList}
                  onClick={() => onChangeView("Home")}>
                 Home
             </div>
-            {user && user.role !== 'ADMIN' && (<>
+            {user && user.role !== 'ADMIN' ? (<>
                 <div className={"publish" + (currentView === "Publish" ? " active" : "")}
                      onClick={() => onChangeView("Publish")}>
                     Pubblica
@@ -70,7 +70,10 @@ export function Header({onLogout, currentView, onChangeView, onChangeRecipeList}
                      onClick={() => onChangeView("Profile")}>
                     Profilo
                 </div>
-            </>)
+            </>) : (<div className={"users" + (currentView === "Users" ? " active" : "")}
+                         onClick={() => onChangeView("Users")}>
+                Users
+            </div>)
             }
             <SearchForm onChangeView={onChangeView} onChangeRecipeList={onChangeRecipeList}/>
         </div>

@@ -11,8 +11,9 @@ import {CreateRecipeForm} from "./CreateRecipeForm.tsx";
 import {Header} from "./Header.tsx";
 import {UserContext} from './UserContext.ts';
 import {ErrorContext, SetErrorContext} from "./ErrorContext.ts";
+import {Users} from "./Users.tsx";
 
-export type ActiveView = "Home" | "Publish" | "Profile" | "Recipe Detail" | "User Recipes";
+export type ActiveView = "Home" | "Publish" | "Profile" | "Recipe Detail" | "User Recipes" | "Users";
 
 interface SessionData {
     user: User | null
@@ -208,6 +209,8 @@ function App() {
                                                    author={currentAuthor}
                                                    onDeleteRecipe={handleDeleteRecipe}
                                                    onAddToBook={handleAddToBook}/>}
+                                {currentView === "Users" &&
+                                    <Users/>}
                                 {/*</>
                         )}*/}
 

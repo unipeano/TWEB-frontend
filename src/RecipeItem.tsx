@@ -108,8 +108,8 @@ export function RecipeItem({
             {showModal && <AddToRecipeBookModal recipeTitle={recipe.title}
                                                 onCancel={() => setShowModal(false)}
                                                 onConfirm={handleAddToBook}/>}
-            {showDelete && <DeleteModal onCancel={() => setShowDelete(false)} onDeleteRecipe={handleDeleteRecipe}
-                                        recipeTitle={recipe.title}/>}
+            {showDelete && <DeleteModal onCancel={() => setShowDelete(false)} onDelete={handleDeleteRecipe}
+                                        name={recipe.title}/>}
         </div>
     );
 }

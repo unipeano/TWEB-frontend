@@ -3,12 +3,12 @@ import {useContext} from "react";
 import {ErrorContext, useSetErrorContext} from "./ErrorContext.ts";
 
 interface DeleteModalProps {
-    onDeleteRecipe: () => void;
+    onDelete: () => void;
     onCancel: () => void;
-    recipeTitle?: string;
+    name?: string;
 }
 
-export function DeleteModal({onDeleteRecipe, onCancel, recipeTitle}: DeleteModalProps) {
+export function DeleteModal({onDelete, onCancel, name}: DeleteModalProps) {
     const error = useContext(ErrorContext);
     const setError = useSetErrorContext();
 
@@ -20,9 +20,9 @@ export function DeleteModal({onDeleteRecipe, onCancel, recipeTitle}: DeleteModal
 
     return (<div className="delete-recipe-modal">
         <div className="delete-recipe-modal-content">
-            <h3>Sei sicuro di voler eliminare "{recipeTitle}"?</h3>
+            <h3>Sei sicuro di voler eliminare "{name}"?</h3>
             <div className="delete-recipe-actions">
-                <button className="btn modal-btn-primary" onClick={onDeleteRecipe}>Elimina</button>
+                <button className="btn modal-btn-primary" onClick={onDelete}>Elimina</button>
                 <button className="btn modal-btn-secondary" onClick={handleCancel}>Annulla</button>
             </div>
             {error && (
