@@ -142,7 +142,7 @@ function App() {
         }
     }, [currentUser]);
 
-    function checkConnection() {
+    useEffect(() => {
         let valid = true;
         fetch('http://localhost:7777/session/login', {
             credentials: 'include',
@@ -156,9 +156,7 @@ function App() {
         return () => {
             valid = false;
         };
-    }
-
-    useEffect(checkConnection, []);
+    }, []);
 
     return (<UserContext.Provider value={currentUser}>
         <ErrorContext.Provider value={error}>
