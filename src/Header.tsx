@@ -13,7 +13,7 @@ export function SearchForm({onChangeView, onChangeRecipeList}: SearchFormProps):
     const [input, setInput] = useState("");
 
     const fetchData = (query: string) => {
-        fetch(`http://localhost:7777/recipes?title=${encodeURIComponent(query)}`, {
+        fetch(`http://localhost:7777/recipes?title=${query}`, {
             credentials: "include",
         })
             .then(res => res.json())
