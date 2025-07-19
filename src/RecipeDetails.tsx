@@ -136,9 +136,6 @@ export function RecipeDetails({currentRecipe, onChangeView, author, onDeleteReci
                             <button className="btn btn-primary" onClick={handleUserClick}>
                                 Altre ricette
                             </button>
-                            <button className="btn btn-secondary">
-                                Segui
-                            </button>
                         </div>
                     </div>
                     <div className="tags-section">

@@ -29,8 +29,8 @@ export function SearchForm({onChangeView, onChangeRecipeList}: SearchFormProps):
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // Previene il comportamento di submit predefinito del form (refresh)
         fetchData(input); // se vuota restituisce tutte le ricette
-        onChangeView('Home'); //per tornare in home
-        setInput(""); // Resetta l'input dopo la ricerca
+        onChangeView('Home');
+        setInput("");
     }
 
     return (<div className="search">
