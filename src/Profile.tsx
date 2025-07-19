@@ -96,13 +96,21 @@ export function RecipeBookNav({activeRecipeBook, onChangeRecipeBook, recipeBookR
 
 interface ProfileProps {
     onChangeView: (view: ActiveView) => void;
+    onChangeRecipe: (recipe: Recipe) => void;
+    onChangeAuthor: (author: string) => void;
 }
 
-export function Profile({onChangeView}: ProfileProps) {
+export function Profile({onChangeView, onChangeRecipe, onChangeAuthor}: ProfileProps) {
     const user = useContext(UserContext);
     const [recipeBookRecipes, setRecipeBookRecipes] = useState<Recipe[]>([]);
     const [activeRecipeBook, setActiveRecipeBook] = useState("My recipes");
 
+
+    function handleRecipeClick(recipe: Recipe) {
+        onChangeRecipe(recipe);
+        onChangeView("Recipe Detail");
+        onChangeAuthor(recipe.author);
+    }
 
     useEffect(() => {
         let valid = true;
@@ -110,7 +118,7 @@ export function Profile({onChangeView}: ProfileProps) {
             credentials: "include",
         })
             .then(response => response.json())
-            .then((recipeList: Recipe[]) => {  // ATTENTION: recipe without categories and ingredients!!
+            .then((recipeList: Recipe[]) => {
                 if (valid) {
                     setRecipeBookRecipes(recipeList);
                 }
@@ -156,9 +164,9 @@ export function Profile({onChangeView}: ProfileProps) {
                 <div className="recipebook-content">
                     <div className="recipes-grid">
                         {recipeBookRecipes.map((recipe) => (
-                            <div className="recipe-card" key={recipe.id} onClick={() => {
-                                onChangeView("Recipe Detail"); // adjust
-                            }}>
+                            <div className="recipe-card" key={recipe.id} onClick={() =>
+                                handleRecipeClick(recipe)
+                            }>
                                 <img
                                     src={`/image/recipes/${recipe.image}`}
                                     alt={recipe.title}
@@ -166,12 +174,6 @@ export function Profile({onChangeView}: ProfileProps) {
                                 />
                                 <div className="recipe-info">
                                     <h3 className="recipebook-recipe-title">{recipe.title}</h3>
-                                    <div className="recipebook-recipe-meta">
-                                        <span>
-                                            <img className="icons" alt="bin"
-                                                 src="/bin.png"/>
-                                        </span>
-                                    </div>
                                 </div>
                             </div>
                         ))}
