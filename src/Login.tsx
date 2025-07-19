@@ -1,14 +1,16 @@
-import {type ReactElement, useState} from "react";
+import {type ReactElement, useContext, useState} from "react";
 import "./Login.css";
+import {ErrorContext} from "./ErrorContext.ts";
 
 interface LoginProps {
     onLogin: (name: string, password: string) => void
-    error: string | null;
 }
 
-export function Login({onLogin, error}: LoginProps): ReactElement {
+export function Login({onLogin}: LoginProps): ReactElement {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const error = useContext(ErrorContext);
 
     return (
         <div className="login-container">

@@ -1,18 +1,23 @@
 import "./AddToRecipeBookModal.css";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import type {RecipeBook} from "./data/data-model.ts";
+import {ErrorContext, useSetErrorContext} from "./ErrorContext.ts";
 
 interface AddToRecipeBookModalProps {
     onConfirm: (id: number) => void;
     onCancel: () => void;
     recipeTitle?: string;
-    error: string | null;
-    onError: (error: string | null) => void;
 }
 
-export function AddToRecipeBookModal({onConfirm, onCancel, recipeTitle, error, onError}: AddToRecipeBookModalProps) {
+export function AddToRecipeBookModal({
+                                         onConfirm,
+                                         onCancel,
+                                         recipeTitle
+                                     }: AddToRecipeBookModalProps) {
     const [currentId, setCurrentId] = useState<number>(0);
     const [recipeBookList, setRecipeBookList] = useState<RecipeBook[]>([]);
+    const error = useContext(ErrorContext);
+    const setError = useSetErrorContext();
 
     useEffect(() => {
         let valid = true;
@@ -34,7 +39,7 @@ export function AddToRecipeBookModal({onConfirm, onCancel, recipeTitle, error, o
 
     function handleCancel() {
         onCancel();
-        onError(null);
+        setError(null);
     }
 
     return (<div className="add-to-recipebook-modal" id="addToRecipeBookModal">

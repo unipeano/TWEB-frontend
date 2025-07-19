@@ -2,6 +2,7 @@ import "./CreateRecipeForm.css";
 import {useContext, useEffect, useState} from "react";
 import type {Category, Ingredient, Recipe} from "./data/data-model.ts";
 import {UserContext} from "./UserContext.ts";
+import {ErrorContext, useSetErrorContext} from "./ErrorContext.ts";
 
 interface CreateRecipeFormProps {
     onChangeRecipeList: (recipeList: Recipe[]) => void;
@@ -23,7 +24,8 @@ export function CreateRecipeForm({onChangeRecipeList}: CreateRecipeFormProps) {
     const [ingredientList, setIngredientList] = useState<Ingredient[]>([]);
     const [categoryList, setCategoryList] = useState<Category[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
-    const [error, setError] = useState<string | null>(null);
+    const setError = useSetErrorContext();
+    const error = useContext(ErrorContext);
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();

@@ -4,6 +4,7 @@ import {useContext, useEffect, useState} from "react";
 import {type ActiveView} from "./App.tsx";
 import {UserContext} from "./UserContext.ts";
 import type {Recipe, RecipeBook} from "./data/data-model.ts";
+import {useSetErrorContext} from "./ErrorContext.ts";
 
 interface RecipeBookNavProps {
     activeRecipeBook: string;
@@ -15,11 +16,8 @@ export function RecipeBookNav({activeRecipeBook, onChangeRecipeBook, recipeBookR
     const [recipeBookList, setRecipeBookList] = useState<RecipeBook[]>([]);
     const user = useContext(UserContext);
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    const setError = useSetErrorContext();
 
-    function handleError(errorMessage: string | null) {
-        setError(errorMessage);
-    }
 
     function handleAddRecipeBook(name: string) {
         const newRecipeBook = {
@@ -87,7 +85,6 @@ export function RecipeBookNav({activeRecipeBook, onChangeRecipeBook, recipeBookR
             </div>
 
             {showModal && <CreateRecipeBookForm onConfirm={handleAddRecipeBook} onCancel={() => setShowModal(false)}
-                                                error={error} onError={handleError}
             />}
         </div>
     );

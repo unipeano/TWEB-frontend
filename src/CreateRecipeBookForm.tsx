@@ -1,25 +1,25 @@
 import "./CreateRecipeBookForm.css";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {ErrorContext, useSetErrorContext} from "./ErrorContext.ts";
 
 interface CreateRecipeBookFormProps {
     onCancel: () => void;
     onConfirm: (name: string) => void;
-    error: string | null;
-    onError: (error: string | null) => void;
 }
 
-export function CreateRecipeBookForm({onCancel, onConfirm, error, onError}: CreateRecipeBookFormProps) {
+export function CreateRecipeBookForm({onCancel, onConfirm}: CreateRecipeBookFormProps) {
     const [name, setName] = useState("");
+    const setError = useSetErrorContext();
+    const error = useContext(ErrorContext);
 
     function handleCancel() {
         onCancel();
-        onError(null);
+        setError(null);
     }
 
     function handleConfirm(e: React.FormEvent<HTMLFormElement>, name: string) {
         e.preventDefault();
         onConfirm(name);
-        setName("");
     }
 
     return (<div className="recipe-book-modal" id="newRecipebookModal">
