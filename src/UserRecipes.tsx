@@ -8,12 +8,14 @@ interface UserRecipesProps {
     onChangeView: (view: ActiveView) => void;
     author: User | null;
     onChangeRecipe: (recipe: Recipe) => void;
+    onDeleteRecipe: (recipeId: number) => void;
 }
 
 export function UserRecipes({
                                 author,
                                 onChangeView,
-                                onChangeRecipe
+                                onChangeRecipe,
+                                onDeleteRecipe
                             }: UserRecipesProps) {
 
     const [userRecipes, setUserRecipes] = useState<Recipe[]>([]);
@@ -53,7 +55,8 @@ export function UserRecipes({
                 <div className="recipe-collection">
                     {userRecipes.map(recipe =>
                         <RecipeItem recipe={recipe} key={recipe.id}
-                                    onChangeView={onChangeView} onChangeRecipe={onChangeRecipe}/>)
+                                    onChangeView={onChangeView} onChangeRecipe={onChangeRecipe}
+                                    onDeleteRecipe={onDeleteRecipe}/>)
                     }
                 </div>
                 <div className="user-recipe-sidebar"/>

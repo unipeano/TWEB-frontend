@@ -10,6 +10,7 @@ import {Profile} from "./Profile.tsx";
 import {CreateRecipeForm} from "./CreateRecipeForm.tsx";
 import {Header} from "./Header.tsx";
 import {UserContext} from './UserContext.ts';
+import {ErrorContext, SetErrorContext} from "./ErrorContext.ts";
 
 export type ActiveView = "Home" | "Publish" | "Profile" | "Recipe Detail" | "User Recipes";
 
@@ -63,6 +64,31 @@ function App() {
         setRecipeList(recipeList);
     }
 
+
+    function handleDeleteRecipe(recipeId: number) {
+        fetch(`http://localhost:7777/recipes/delete`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({id: recipeId}),
+        })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    throw new Error("Errore durante l'eliminazione della ricetta");
+                }
+            }).then((recipes: Recipe[]) => {
+            //setCurrentRecipe(null);
+            setCurrentView("Home");
+            setRecipeList(recipes);
+            setError(null);
+        })
+            .catch(err => setError(err.message));
+    }
+
     useEffect(() => {
         if (currentUser) { // solo se utente loggato
             let valid = true;
@@ -100,72 +126,79 @@ function App() {
     useEffect(checkConnection, []);
 
     return (<UserContext.Provider value={currentUser}>
-        {(currentUser ?
-                <>
-                    <Header onLogout={() => {
-                        fetch("http://localhost:7777/session/logout", {
-                            credentials: "include",
-                        })
-                            .then(res => res.json())
-                            .then((sd: SessionData) => {
-                                setCurrentUser(sd.user);
-                                setCurrentView('Home');
-                            });
-                    }}
-                            currentView={currentView}
-                            onChangeView={handleCurrentView}
-                            onChangeRecipeList={handleRecipeListChange}/>
-                    <div className="central-area">
+        <ErrorContext.Provider value={error}>
+            <SetErrorContext.Provider value={setError}>
+                {(currentUser ?
+                        <>
+                            <Header onLogout={() => {
+                                fetch("http://localhost:7777/session/logout", {
+                                    credentials: "include",
+                                })
+                                    .then(res => res.json())
+                                    .then((sd: SessionData) => {
+                                        setCurrentUser(sd.user);
+                                        setCurrentView('Home');
+                                    });
+                            }}
+                                    currentView={currentView}
+                                    onChangeView={handleCurrentView}
+                                    onChangeRecipeList={handleRecipeListChange}/>
+                            <div className="central-area">
 
-                        {/*{(currentUser.role === 'ADMIN' ?
+                                {/*{(currentUser.role === 'ADMIN' ?
                                 viewPermissions.ADMIN :
                                 viewPermissions.USER
                         ).includes(currentView) && (
                             <>*/}
-                        {currentView === "Home" &&
-                            <Home recipeList={recipeList}
-                                  onChangeAuthor={handleAuthorChange}
-                                  onChangeView={handleCurrentView}
-                                  onChangeRecipe={handleRecipeChange}
-                            />}
-                        {currentView === "Publish" &&
-                            <CreateRecipeForm onChangeRecipeList={handleRecipeListChange}/>}
-                        {currentView === "Profile" &&
-                            <Profile onChangeView={handleCurrentView} onChangeRecipe={handleRecipeChange}
-                                     onChangeAuthor={handleAuthorChange}/>}
-                        {currentView === "User Recipes" &&
-                            <UserRecipes onChangeView={handleCurrentView}
-                                         onChangeRecipe={handleRecipeChange}
-                                         author={currentAuthor}/>}
-                        {currentView === "Recipe Detail" &&
-                            <RecipeDetails currentRecipe={currentRecipe}
-                                           onChangeView={handleCurrentView}
-                                           author={currentAuthor}/>}
-                        {/*</>
+                                {currentView === "Home" &&
+                                    <Home recipeList={recipeList}
+                                          onChangeAuthor={handleAuthorChange}
+                                          onChangeView={handleCurrentView}
+                                          onChangeRecipe={handleRecipeChange}
+                                          onDeleteRecipe={handleDeleteRecipe}
+                                    />}
+                                {currentView === "Publish" &&
+                                    <CreateRecipeForm onChangeRecipeList={handleRecipeListChange}/>}
+                                {currentView === "Profile" &&
+                                    <Profile onChangeView={handleCurrentView} onChangeRecipe={handleRecipeChange}
+                                             onChangeAuthor={handleAuthorChange}/>}
+                                {currentView === "User Recipes" &&
+                                    <UserRecipes onChangeView={handleCurrentView}
+                                                 onChangeRecipe={handleRecipeChange}
+                                                 author={currentAuthor}
+                                                 onDeleteRecipe={handleDeleteRecipe}/>}
+                                {currentView === "Recipe Detail" &&
+                                    <RecipeDetails currentRecipe={currentRecipe}
+                                                   onChangeView={handleCurrentView}
+                                                   author={currentAuthor}
+                                                   onDeleteRecipe={handleDeleteRecipe}/>}
+                                {/*</>
                         )}*/}
 
-                        <Footer/>
-                    </div>
-                </>
-                :
-                <Login onLogin={(username, password) => {
-                    fetch(`http://localhost:7777/session/login?username=${username}&password=${password}`,
-                        {credentials: "include"})
-                        .then(res => {
-                            if (res.status === 200)
-                                return res.json()
-                            else throw new Error("Credenziali non valide");
-                        })
-                        .then((sd: SessionData) => {
-                            setCurrentUser(sd.user);
-                            setError(null);
-                        })
-                        .catch(err => {
-                            setError(err.message);
-                        })
-                }}
-                       error={error}/>
-        )}
+                                <Footer/>
+                            </div>
+                        </>
+                        :
+                        <Login onLogin={(username, password) => {
+                            fetch(`http://localhost:7777/session/login?username=${username}&password=${password}`,
+                                {credentials: "include"})
+                                .then(res => {
+                                    if (res.status === 200)
+                                        return res.json()
+                                    else throw new Error("Credenziali non valide");
+                                })
+                                .then((sd: SessionData) => {
+                                    setCurrentUser(sd.user);
+                                    setError(null);
+                                })
+                                .catch(err => {
+                                    setError(err.message);
+                                })
+                        }}
+                        />
+                )}
+            </SetErrorContext.Provider>
+        </ErrorContext.Provider>
     </UserContext.Provider>);
 }
 

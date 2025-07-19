@@ -5,22 +5,21 @@ import {AddToRecipeBookModal} from "./AddToRecipeBookModal.tsx";
 import {useContext, useState} from "react";
 import {UserContext} from "./UserContext.ts";
 import {DeleteModal} from "./DeleteModal.tsx";
+import {useSetErrorContext} from "./ErrorContext.ts";
 
 interface RecipeDetailsProps {
     currentRecipe: Recipe | null;
     onChangeView: (view: ActiveView) => void;
     author: User | null;
+    onDeleteRecipe: (recipeId: number) => void;
 }
 
-export function RecipeDetails({currentRecipe, onChangeView, author}: RecipeDetailsProps) {
+export function RecipeDetails({currentRecipe, onChangeView, author, onDeleteRecipe}: RecipeDetailsProps) {
     const [showModal, setShowModal] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const setError = useSetErrorContext();
     const user = useContext(UserContext);
     const [showDelete, setShowDelete] = useState(false);
 
-    function handleError(errorMessage: string | null) {
-        setError(errorMessage);
-    }
 
     function handleUserClick() {
         if (currentRecipe) {
@@ -34,7 +33,6 @@ export function RecipeDetails({currentRecipe, onChangeView, author}: RecipeDetai
 
     // duplicated also in RecipeITEM
     function handleAddRecipe(recipeBookId: number) {
-        // la fetch seguente ritorna Void, serve che restituisca qualcosa=?
         fetch(`http://localhost:7777/me/recipebooks/${recipeBookId}/recipes`, {
             method: "POST",
             headers: {
@@ -42,11 +40,7 @@ export function RecipeDetails({currentRecipe, onChangeView, author}: RecipeDetai
             },
             body: JSON.stringify({id: currentRecipe?.id}),
             credentials: "include",
-        })
-            /*.then(res => res.json())
-            .then(data => {/*setCollections(data)*/
-            /*console.log(data)
-        });*/.then(res => {
+        }).then(res => {
             if (res.ok) {
                 setError(null);
                 setShowModal(false);
@@ -56,6 +50,13 @@ export function RecipeDetails({currentRecipe, onChangeView, author}: RecipeDetai
         })
             .catch(error => setError(error.message));
 
+    }
+
+    function handleDeleteRecipe() {
+        if (currentRecipe) {
+            onDeleteRecipe(currentRecipe.id);
+            setShowDelete(false);
+        }
     }
 
     return (<div className="recipe-details-container">
@@ -159,9 +160,10 @@ export function RecipeDetails({currentRecipe, onChangeView, author}: RecipeDetai
             </div>
             {showModal && <AddToRecipeBookModal recipeTitle={currentRecipe?.title}
                                                 onCancel={() => setShowModal(false)}
-                                                onConfirm={handleAddRecipe}
-                                                error={error} onError={handleError}/>}
-            {showDelete && <DeleteModal onCancel={() => setShowDelete(false)}/>}
+                                                onConfirm={handleAddRecipe}/>}
+            {showDelete && <DeleteModal onCancel={() => setShowDelete(false)}
+                                        recipeTitle={currentRecipe?.title}
+                                        onDeleteRecipe={handleDeleteRecipe}/>}
         </div>
     );
 }

@@ -3,6 +3,7 @@ import {type ReactElement, useContext, useState} from "react";
 import {type ActiveView} from "./App.tsx";
 import {AddToRecipeBookModal} from "./AddToRecipeBookModal.tsx";
 import {UserContext} from "./UserContext.ts";
+import {useSetErrorContext} from "./ErrorContext.ts";
 import {DeleteModal} from "./DeleteModal.tsx";
 
 interface RecipeItemProps {
@@ -10,6 +11,7 @@ interface RecipeItemProps {
     onChangeView: (view: ActiveView) => void;
     onChangeAuthor?: (author: string) => void;
     onChangeRecipe: (recipe: Recipe) => void;
+    onDeleteRecipe: (recipeId: number) => void;
 }
 
 export function RecipeItem({
@@ -17,13 +19,14 @@ export function RecipeItem({
                                onChangeView,
                                recipe,
                                onChangeRecipe,
+                               onDeleteRecipe
                            }: RecipeItemProps): ReactElement {
 
     const categories: ReactElement[] = recipe.categories.map(c => <span className="recipe-category"
                                                                         key={c.id}>{c.name}</span>);
 
     const [showModal, setShowModal] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const setError = useSetErrorContext();
     const user = useContext(UserContext);
     const [showDelete, setShowDelete] = useState(false);
 
@@ -46,9 +49,13 @@ export function RecipeItem({
         }
     }
 
+    function handleDeleteRecipe() {
+        onDeleteRecipe(recipe.id);
+        setShowDelete(false);
+    }
+
 
     function handleAddRecipe(recipeBookId: number) {
-        // la fetch seguente ritorna Void, serve che restituisca qualcosa=?
         fetch(`http://localhost:7777/me/recipebooks/${recipeBookId}/recipes`, {
             method: "POST",
             headers: {
@@ -56,11 +63,7 @@ export function RecipeItem({
             },
             body: JSON.stringify({id: recipe.id}),
             credentials: "include",
-        })
-            /*.then(res => res.json())
-            .then(data => {/*setCollections(data)*/
-            /*console.log(data)
-        });*/.then(res => {
+        }).then(res => {
             if (res.ok) {
                 setError(null);
                 setShowModal(false);
@@ -72,9 +75,6 @@ export function RecipeItem({
 
     }
 
-    function handleError(errorMessage: string | null) {
-        setError(errorMessage);
-    }
 
     return (
         <div className="recipe-item" data-recipeid={recipe.id}>
@@ -118,9 +118,9 @@ export function RecipeItem({
             </div>
             {showModal && <AddToRecipeBookModal recipeTitle={recipe.title}
                                                 onCancel={() => setShowModal(false)}
-                                                onConfirm={handleAddRecipe}
-                                                error={error} onError={handleError}/>}
-            {showDelete && <DeleteModal onCancel={() => setShowDelete(false)}/>}
+                                                onConfirm={handleAddRecipe}/>}
+            {showDelete && <DeleteModal onCancel={() => setShowDelete(false)} onDeleteRecipe={handleDeleteRecipe}
+                                        recipeTitle={recipe.title}/>}
         </div>
     );
 }
