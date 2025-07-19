@@ -8,14 +8,16 @@ interface UserRecipesProps {
     onChangeView: (view: ActiveView) => void;
     author: User | null;
     onChangeRecipe: (recipe: Recipe) => void;
-    onDeleteRecipe: (recipeId: number) => void;
+    onDeleteRecipe: (recipeId: number) => Promise<boolean>;
+    onAddToBook: (recipeBookId: number, recipeId: number) => Promise<boolean>;
 }
 
 export function UserRecipes({
                                 author,
                                 onChangeView,
                                 onChangeRecipe,
-                                onDeleteRecipe
+                                onDeleteRecipe,
+                                onAddToBook
                             }: UserRecipesProps) {
 
     const [userRecipes, setUserRecipes] = useState<Recipe[]>([]);
@@ -56,7 +58,8 @@ export function UserRecipes({
                     {userRecipes.map(recipe =>
                         <RecipeItem recipe={recipe} key={recipe.id}
                                     onChangeView={onChangeView} onChangeRecipe={onChangeRecipe}
-                                    onDeleteRecipe={onDeleteRecipe}/>)
+                                    onDeleteRecipe={onDeleteRecipe}
+                                    onAddToBook={onAddToBook}/>)
                     }
                 </div>
                 <div className="user-recipe-sidebar"/>

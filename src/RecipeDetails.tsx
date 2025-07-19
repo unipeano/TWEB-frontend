@@ -11,10 +11,11 @@ interface RecipeDetailsProps {
     currentRecipe: Recipe | null;
     onChangeView: (view: ActiveView) => void;
     author: User | null;
-    onDeleteRecipe: (recipeId: number) => void;
+    onDeleteRecipe: (recipeId: number) => Promise<boolean>;
+    onAddToBook: (recipeBookId: number, recipeId: number) => Promise<boolean>;
 }
 
-export function RecipeDetails({currentRecipe, onChangeView, author, onDeleteRecipe}: RecipeDetailsProps) {
+export function RecipeDetails({currentRecipe, onChangeView, author, onDeleteRecipe, onAddToBook}: RecipeDetailsProps) {
     const [showModal, setShowModal] = useState(false);
     const setError = useSetErrorContext();
     const user = useContext(UserContext);
@@ -31,31 +32,25 @@ export function RecipeDetails({currentRecipe, onChangeView, author, onDeleteReci
         }
     }
 
-    // duplicated also in RecipeITEM
-    function handleAddRecipe(recipeBookId: number) {
-        fetch(`http://localhost:7777/me/recipebooks/${recipeBookId}/recipes`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({id: currentRecipe?.id}),
-            credentials: "include",
-        }).then(res => {
-            if (res.ok) {
-                setError(null);
-                setShowModal(false);
-            } else {
-                throw new Error("The recipe is already in the recipe book.");
-            }
-        })
-            .catch(error => setError(error.message));
-
+    function handleAddToBook(recipeBookId: number) {
+        if (currentRecipe) {
+            onAddToBook(recipeBookId, currentRecipe.id).then(success => {
+                if (success) {
+                    setShowModal(false);
+                }
+            });
+        } else {
+            setError("No recipe selected.");
+        }
     }
 
     function handleDeleteRecipe() {
         if (currentRecipe) {
-            onDeleteRecipe(currentRecipe.id);
-            setShowDelete(false);
+            onDeleteRecipe(currentRecipe.id).then(success => {
+                if (success) {
+                    setShowDelete(false);
+                }
+            });
         }
     }
 
@@ -160,7 +155,7 @@ export function RecipeDetails({currentRecipe, onChangeView, author, onDeleteReci
             </div>
             {showModal && <AddToRecipeBookModal recipeTitle={currentRecipe?.title}
                                                 onCancel={() => setShowModal(false)}
-                                                onConfirm={handleAddRecipe}/>}
+                                                onConfirm={handleAddToBook}/>}
             {showDelete && <DeleteModal onCancel={() => setShowDelete(false)}
                                         recipeTitle={currentRecipe?.title}
                                         onDeleteRecipe={handleDeleteRecipe}/>}

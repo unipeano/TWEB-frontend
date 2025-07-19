@@ -44,6 +44,14 @@ function App() {
         setCurrentRecipe(recipe);
     }
 
+    function handleCleanUp(sd: SessionData) {
+        setCurrentUser(sd.user);
+        setCurrentView("Home");
+        setCurrentAuthor(null);
+        setCurrentRecipe(null);
+        setRecipeList([]);
+        setError(null);
+    }
 
     function handleCurrentView(view: ActiveView) {
         setCurrentView(view);
@@ -66,7 +74,7 @@ function App() {
 
 
     function handleDeleteRecipe(recipeId: number) {
-        fetch(`http://localhost:7777/recipes/delete`, {
+        return fetch(`http://localhost:7777/recipes/delete`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -78,15 +86,41 @@ function App() {
                 if (res.ok) {
                     return res.json();
                 } else {
-                    throw new Error("Errore durante l'eliminazione della ricetta");
+                    throw new Error("Error deleting recipe.");
                 }
             }).then((recipes: Recipe[]) => {
-            //setCurrentRecipe(null);
-            setCurrentView("Home");
-            setRecipeList(recipes);
-            setError(null);
+                setCurrentView("Home");
+                setRecipeList(recipes);
+                setError(null);
+                return true;
+            })
+            .catch(err => {
+                setError(err.message);
+                return false;
+            });
+    }
+
+    function handleAddToBook(recipeBookId: number, recipeId: number) {
+        return fetch(`http://localhost:7777/me/recipebooks/${recipeBookId}/recipes`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({id: recipeId}),
+            credentials: "include",
+        }).then(res => {
+            if (res.ok) {
+                setError(null);
+                return true;
+            } else {
+                throw new Error("The recipe is already in the recipe book.");
+            }
         })
-            .catch(err => setError(err.message));
+            .catch(error => {
+                setError(error.message);
+                return false;
+            });
+
     }
 
     useEffect(() => {
@@ -136,8 +170,7 @@ function App() {
                                 })
                                     .then(res => res.json())
                                     .then((sd: SessionData) => {
-                                        setCurrentUser(sd.user);
-                                        setCurrentView('Home');
+                                        handleCleanUp(sd);
                                     });
                             }}
                                     currentView={currentView}
@@ -156,6 +189,7 @@ function App() {
                                           onChangeView={handleCurrentView}
                                           onChangeRecipe={handleRecipeChange}
                                           onDeleteRecipe={handleDeleteRecipe}
+                                          onAddToBook={handleAddToBook}
                                     />}
                                 {currentView === "Publish" &&
                                     <CreateRecipeForm onChangeRecipeList={handleRecipeListChange}/>}
@@ -166,12 +200,14 @@ function App() {
                                     <UserRecipes onChangeView={handleCurrentView}
                                                  onChangeRecipe={handleRecipeChange}
                                                  author={currentAuthor}
-                                                 onDeleteRecipe={handleDeleteRecipe}/>}
+                                                 onDeleteRecipe={handleDeleteRecipe}
+                                                 onAddToBook={handleAddToBook}/>}
                                 {currentView === "Recipe Detail" &&
                                     <RecipeDetails currentRecipe={currentRecipe}
                                                    onChangeView={handleCurrentView}
                                                    author={currentAuthor}
-                                                   onDeleteRecipe={handleDeleteRecipe}/>}
+                                                   onDeleteRecipe={handleDeleteRecipe}
+                                                   onAddToBook={handleAddToBook}/>}
                                 {/*</>
                         )}*/}
 

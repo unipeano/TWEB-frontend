@@ -53,7 +53,8 @@ interface HomeProps {
     onChangeView: (view: ActiveView) => void;
     onChangeAuthor: (author: string) => void;
     onChangeRecipe: (recipe: Recipe) => void;
-    onDeleteRecipe: (recipeId: number) => void;
+    onDeleteRecipe: (recipeId: number) => Promise<boolean>;
+    onAddToBook: (recipeBookId: number, recipeId: number) => Promise<boolean>;
 }
 
 export function Home({
@@ -62,6 +63,7 @@ export function Home({
                          onChangeAuthor,
                          onChangeRecipe,
                          onDeleteRecipe,
+                         onAddToBook
                      }: HomeProps): ReactElement {
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
     const [categories, setCategories] = useState<Category[]>([]);
@@ -104,6 +106,7 @@ export function Home({
                                     onChangeView={onChangeView} onChangeRecipe={onChangeRecipe}
                                     onChangeAuthor={onChangeAuthor}
                                     onDeleteRecipe={onDeleteRecipe}
+                                    onAddToBook={onAddToBook}
                         />
                     ))}
                 </div>
