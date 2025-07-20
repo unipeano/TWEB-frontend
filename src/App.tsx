@@ -20,11 +20,6 @@ interface SessionData {
     message: string
 }
 
-/*const viewPermissions = {
-    ADMIN: ['Home', 'User Recipes', 'Recipe Detail'],
-    USER: ['Home', 'Publish', 'Profile', 'Recipe Detail']
-};*/
-
 
 function App() {
     const [currentUser, setCurrentUser] = useState<User | null>(null);  //utente loggato
@@ -177,11 +172,6 @@ function App() {
                                     onChangeRecipeList={handleRecipeListChange}/>
                             <div className="central-area">
 
-                                {/*{(currentUser.role === 'ADMIN' ?
-                                viewPermissions.ADMIN :
-                                viewPermissions.USER
-                        ).includes(currentView) && (
-                            <>*/}
                                 {currentView === "Home" &&
                                     <Home recipeList={recipeList}
                                           onChangeAuthor={handleAuthorChange}
@@ -209,8 +199,6 @@ function App() {
                                                    onAddToBook={handleAddToBook}/>}
                                 {currentView === "Users" &&
                                     <Users/>}
-                                {/*</>
-                        )}*/}
 
                                 <Footer/>
                             </div>

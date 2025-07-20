@@ -33,6 +33,6 @@ export interface RecipeBook {
     id: number;
     name: string;
     recipeBookOwner: string;
-    recipes: number[]; // Array of recipe IDs
+    recipes: number[];
 }
 
