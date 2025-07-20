@@ -73,6 +73,20 @@
     gap: 0.5rem;
 }
 
+.role-promotion {
+    flex-grow: 1;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 0.9rem;
+    background-color: #40c057;
+}
+
+.role-promotion:hover {
+    background-color: #37b24d;
+}
+
 .delete-btn {
     padding: 0.5rem 1rem;
     background-color: #e74c3c;
@@ -87,3 +101,31 @@
 .delete-btn:hover {
     background-color: #c0392b;
 }
+
+.promote-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.promote-modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.promote-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+}
+
+
