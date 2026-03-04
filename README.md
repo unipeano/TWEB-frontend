@@ -47,7 +47,7 @@ npm run dev
 
 The application will be available at `http://localhost:5173` by default.
 
-**Note**: This frontend requires the [TWEB-backend](https://github.com/unipeano/TWEB-backend) to be running on port 8080. See the backend repository for setup instructions.
+**Note**: This frontend requires the [TWEB-backend](https://github.com/unipeano/TWEB-backend) to be running on port 7777. See the backend repository for setup instructions.
 
 ## Building for Production
 
