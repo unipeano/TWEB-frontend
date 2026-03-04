@@ -91,10 +91,10 @@ src/
 Create a `.env` file in the root directory for environment variables:
 
 ```
-VITE_API_URL=http://localhost:8080
+VITE_API_URL=http://localhost:7777
 ```
 
-Make sure the backend server is running on port 8080 before starting the development server.
+Make sure the backend server is running on port 7777 before starting the development server.
 
 ## Contributing
 
