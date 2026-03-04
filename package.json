@@ -1,7 +1,7 @@
 {
-  "name": "project-frontend",
-  "private": true,
-  "version": "0.0.0",
+  "name": "recipe-share-platform",
+  "version": "0.0.1",
+  "description": "A modern recipe sharing platform built with React and TypeScript",
   "type": "module",
   "scripts": {
     "dev": "vite",
