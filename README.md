@@ -28,8 +28,8 @@ A modern web application for sharing, discovering, and managing recipes. Built w
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd project-frontend
+git clone https://github.com/unipeano/TWEB-frontend.git
+cd TWEB-frontend
 ```
 
 2. Install dependencies:
